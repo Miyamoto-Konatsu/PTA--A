@@ -1,0 +1,31 @@
+#include <iostream>
+#include <map>
+#include <math.h>
+#include <set>
+#include <string>
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+int main()
+{
+    long a,b;
+    cin>>a>>b; //输入ab
+    long sum=a+b;//计算和
+    std::string s=std::to_string(sum); //和转化为字符串
+    string out;  //要输出的字符串
+    int index=0; //index=3则加入‘,’
+    for(int i=s.length()-1;i!=0;i--){ //到第二位结束，避免越界
+            index++;
+            out+=s[i];
+            if(index==3){
+                index=0;
+                if(s[i-1]!='-')//当第一位为负号是不用加','
+                    out+=',';
+            }
+    }
+    out+=s[0];//追加第一位
+    cout<<string(out.rbegin(),out.rend()); //反向输出
+    system("pause");
+    return 0;
+}
