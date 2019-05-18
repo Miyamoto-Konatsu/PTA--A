@@ -1,0 +1,66 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int inf = 100000;   //无限距离
+int weight[500];          //每个城市救援队的数量
+int dis[500];             //最短路径的长度
+int num_road[500];        //最短路径的数量
+int dis_x_y[500][500];    //两座城市间的距离
+int num_rescue_team[500]; //能聚集的救援队数量
+bool visit[500];
+int n, m, start, target; //城市的数量，路线的数量，起点，终点
+
+void dijk()
+{
+    dis[start] = 0;                         //起点的距离是0
+    num_rescue_team[start] = weight[start]; //聚集的救援队数量开始等于起点的救援队数量
+    num_road[start] = 1;                    //起点的最短路径为1条
+    for (int i = 0; i < n; i++)
+    {
+        int next = -1, min_length = inf; //找到第下一个距离最短的路径点，第一个路径点为起点
+        for (int j = 0; j < n; j++)
+        {
+            if (dis[j] < min_length && !visit[j])  //下一个最短路径点为 next 
+            {
+                min_length = dis[j];  
+                next = j;
+            }
+        }
+        visit[next] = true;  //把下一个最短路径点设为以访问
+        for (int k = 0; k < n; k++)   
+        { 
+            if (dis[k] > dis[next] + dis_x_y[next][k])  //计算其他点与下个点的距离最短的距离 
+            {
+                dis[k] = dis[next] + dis_x_y[next][k];
+                num_road[k] = num_road[next];
+                num_rescue_team[k] = num_rescue_team[next]+weight[k];
+            }
+            else if (dis[k] == dis[next] + dis_x_y[next][k] && dis[next] != 0)  //如果有点的距离与最短路径的距离相同
+            {
+                num_road[k] += num_road[next];  //最短路径的个数增加
+                if (weight[k] + num_rescue_team[next] > num_rescue_team[k])  //比较能聚集的救援队的数量
+                    num_rescue_team[k] = weight[k] + num_rescue_team[next];
+            }
+        }
+    }
+}
+int main()
+{
+    cin >> n >> m >> start >> target;
+    for (int i = 0; i < n; i++)
+        cin >> weight[i];
+    fill(dis, dis + 500, inf);
+    fill(dis_x_y[0], dis_x_y[0] + 500 * 500, inf);
+    fill(num_road, num_road, 0);
+    fill(num_rescue_team, num_rescue_team + 500, 0);
+    fill(visit, visit + 500, false);
+     for (int i = 0; i < m; i++)
+    {
+        int from, to, distance;
+        cin >> from >> to >> distance;
+        dis_x_y[from][to] = dis_x_y[to][from]= distance;
+    }
+    dijk();
+    cout<<num_road[target]<< ' '<<num_rescue_team[target];
+    system("pause");
+}
