@@ -1,0 +1,20 @@
+
+#include<bits/stdc++.h>
+using namespace std;
+string dict[10]={"zero","one","two","three","four","five","six","seven","eight","nine"};
+int main()
+{
+	string  num;
+    cin>>num;
+    long long int  sum=0;
+    for(auto it:num)
+        sum+=it-'0';
+    std::string a= std::to_string(sum);
+    cout<<dict[a[0]-'0'];
+    for(int i=1;i<a.size();i++)
+        cout<<' '<<dict[a[i]-'0'];
+    system("pause");
+	return 0;
+}
+
+//数值过大，不能使用 long long int
