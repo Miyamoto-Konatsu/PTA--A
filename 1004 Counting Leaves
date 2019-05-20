@@ -1,0 +1,45 @@
+#include <bits/stdc++.h>
+using namespace std;
+struct node
+{
+    int parent = -1;  //默认没有父亲结点
+    int level = 0;   //树的层次初始为0
+    int haschild = 0;  //默认没有孩子结点
+};
+
+int main()
+{
+    node tree[101];
+    int n, m;
+    cin >> n >> m;
+    for (int i = 0; i < m; i++)
+    {
+        int id_f, k, id_c; //父亲结点，孩子结点个数，孩子结点
+        cin >> id_f >> k;
+        for (int j = 0; j < k; j++)
+        {
+            cin >> id_c;  //输入孩子结点
+            tree[id_c].parent = id_f;  //孩子结点的 父亲结点为刚才输入的父亲结点
+            tree[id_f].haschild = 1;  //父亲结点此时有了孩子
+        }
+    }
+    int max_level = 0;  //最大树的层次为0层，即根节点的那一层
+    vector<int> cout_leaf(101, 0);  //每层叶子结点的个数
+    for (int i = 1; i <= n; i++)
+    {
+        for (int j = 1; j <= n; j++)
+        {
+            if (tree[j].parent == i)  //孩子结点的层次等于父亲结点的层次加1
+                tree[j].level = tree[i].level + 1;
+            if (tree[j].level > max_level)  //更新最高的层次
+                max_level = tree[j].level;
+        }
+        if (!tree[i].haschild)  //
+            cout_leaf[tree[i].level] += 1;
+    }
+    cout << cout_leaf[0];  //输出第一层
+    for (int i = 1; i <= max_level; i++)  
+        cout << ' ' << cout_leaf[i];
+    system("pause");
+    return 0;
+}
