@@ -1,0 +1,33 @@
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int N;			
+	cin >> N;
+	int * array = new int[N];
+	for (int i = 0; i < N; i++) {
+		cin >> array[i];
+	}
+	//sum为子列和，MAX为最大子列和，first记录子列和的第一项，src为最大子列和的第一项，end为最大子列和的最后一项
+	int sum=0,first=0,src=N-1,end=N-1,max=-1;
+	//动态规划
+	for (int i = 0; i < N; i++) {
+		sum += array[i];
+		//当前子列和>最大子列和时修改MAX,即SUM>MAX时，将max = sum.
+		if (sum > max) {
+			max = sum;
+			src = first;
+			end = i;
+		}
+		//sum<0时重置sum,first
+		if (sum <0) {
+			first = i + 1;
+			sum = 0;
+		}
+	}
+	if (max<0) cout << 0 << ' ' << array[0] << ' ' << array[N - 1];
+	else cout << max << ' ' << array[src] << ' ' << array[end];
+	delete[] array;
+    return 0; 
+}
+ 
