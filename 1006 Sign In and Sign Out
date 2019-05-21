@@ -1,0 +1,29 @@
+
+#include<bits/stdc++.h>
+using namespace std;
+struct form{
+    string id;
+    string start_time;
+    string end_time;
+};
+int cmp1(form a,form b){
+    return a.start_time<b.start_time;
+}
+int cmp2(form a,form b){
+    return a.end_time>b.end_time;
+}
+int main()
+{
+	int N;
+    cin>>N;
+    vector<form>person(N);
+    for(int i=0;i<N;i++)
+        cin>>person[i].id>>person[i].start_time>>person[i].end_time;
+    sort(person.begin(),person.end(),cmp1);
+    cout<<person[0].id;
+    sort(person.begin(),person.end(),cmp2);
+    cout<<' '<<person[0].id;
+    system("pause");
+
+	return 0;
+}
