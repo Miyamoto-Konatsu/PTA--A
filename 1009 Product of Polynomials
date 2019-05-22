@@ -1,0 +1,32 @@
+#include<cstdio>
+struct poly{
+    int exp;        //指数
+    double cof;     //系数 
+}poly[1010];
+double answer[2010];
+int main(){
+    int k,count=0;
+    scanf("%d",&k);
+    for(int i=0;i<k;i++){
+        scanf("%d %lf",&poly[i].exp,&poly[i].cof);
+    }
+    scanf("%d",&k);
+    for(int i=0;i<k;i++){
+        int exp;
+        double cof;
+        scanf("%d %lf",&exp,&cof);
+        for(int j=0;j<k;j++){
+            answer[exp+poly[j].exp]+=cof*poly[j].cof;
+        }
+    }
+    for(int i=0;i<=2000;i++){
+        if(answer[i]!=0.0)
+            count++;
+    }
+    printf("%d",count);
+    for(int i=2000;i>=0;i--){
+        if(answer[i]!=0)
+            printf(" %d %0.1f",i,answer[i]);
+    }
+    return 0;
+} 
