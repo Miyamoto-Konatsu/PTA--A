@@ -1,0 +1,29 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    int N;
+    cin >> N;
+    int floor = 0;
+    int time = 0;
+    for (int i = 0; i < N; i++)
+    {
+        int b;
+        cin >> b;
+        if (b > floor)
+        {
+            time += (b - floor) * 6;
+        }
+        else
+        {
+            time += (floor - b) * 4;
+        }
+
+        floor = b;
+    }
+    time += 5 * N;
+    cout << time;
+    system("pause");
+    return 0;
+}
