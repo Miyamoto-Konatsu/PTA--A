@@ -1,0 +1,35 @@
+
+#include <bits/stdc++.h>
+using namespace std;
+//计算每一场的最高赔率
+char WTL[3] = {'W', 'T', 'L'};
+float bet(float a[])
+{
+    int max = 0;
+    float price = 0;
+    for (int i = 0; i < 3; i++)
+    {
+        if (a[i] > price)
+        {
+            max = i;
+            price = a[i];
+        }
+    }
+    cout << WTL[max] << ' ';
+    return price;
+}
+
+int main()
+{
+    float a[3],profit = 1;
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+            cin >> a[j];
+        profit *= bet(a);
+    }
+    profit = (profit * 0.65 - 1) * 2;
+    printf("%.2f", profit);
+    system("pause");
+    return 0;
+}
