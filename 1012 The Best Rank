@@ -1,0 +1,112 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+/*使用sort，自定义比较函数。
+排名可能并列。
+使用map哈希表作最后的查询。*/
+
+struct student
+{
+    int id;
+    int A, C, M, E;
+    int bestRank = 100000;
+    char bestItem;
+    student(int id, int C, int M, int E) : id(id), C(C), M(M), E(E)
+    {
+        A = (C + M + E) / 3;
+    }
+};
+int cmpA(student a, student b)
+{
+    return a.A > b.A;
+}
+int cmpC(student a, student b)
+{
+    return a.C > b.C;
+}
+int cmpM(student a, student b)
+{
+    return a.M > b.M;
+}
+int cmpE(student a, student b)
+{
+    return a.E > b.E;
+}
+int main()
+{
+    int N, M;
+    cin >> N >> M;
+    if(N==0){
+		int x;
+		while(M--){
+			cin>>x;
+			cout<<"N/A"<<endl;
+		}
+		return 0;
+	}
+    vector<student> stu;
+    stu.push_back(student(0, 1000, 1000, 1000));
+    for (int i = 0; i < N; i++)
+    {
+        int id, C, M, E;
+        cin >> id >> C >> M >> E;
+        stu.push_back(student(id, C, M, E));
+    }
+    sort(stu.begin(), stu.end(), cmpA);
+    int rank = 1;
+    for (int i = 1; i <= N; i++)
+    {
+        if (stu[i - 1].A > stu[i].A)
+        {
+            rank = i;
+        }
+        stu[i].bestRank = rank;
+        stu[i].bestItem = 'A';
+    }
+    sort(stu.begin(), stu.end(), cmpC);
+    for (int i = 1; i <= N; i++)
+    {
+        if (stu[i - 1].C > stu[i].C)       
+            rank = i;
+        if (stu[i].bestRank > rank)
+        {
+            stu[i].bestRank = rank;
+            stu[i].bestItem = 'C';
+        }
+    }
+    sort(stu.begin(), stu.end(), cmpM);
+    for (int i = 1; i <= N; i++)
+    {
+        if (stu[i - 1].M > stu[i].M)
+            rank = i;       
+        if (stu[i].bestRank > rank)
+        {
+            stu[i].bestRank = rank;
+            stu[i].bestItem = 'M';
+        }
+    }
+    sort(stu.begin(), stu.end(), cmpE);
+    for (int i = 1; i <= N; i++)
+    {
+        if (stu[i - 1].E > stu[i].E)      
+            rank = i;
+        if (stu[i].bestRank > rank)
+        {
+            stu[i].bestRank = rank;
+            stu[i].bestItem = 'E';
+        }
+    }
+    map<int,int>stus;
+    for(int i=1;i<=N;i++)
+        stus[stu[i].id]=i;
+    for(int i=0;i<M;i++){
+        int id_query;
+        cin>>id_query;
+        if(stus.find(id_query)!=stus.end())
+            cout<<stu[stus[id_query]].bestRank<<" "<<stu[stus[id_query]].bestItem<<endl;
+        else      
+            cout<<"N/A"<<endl;      
+    }
+    system("pause");
+    return 0;
+}
