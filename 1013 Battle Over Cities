@@ -1,0 +1,46 @@
+#include <bits/stdc++.h>
+using namespace std;
+int cities[1001];
+int highways[1001][1001];
+int visit[1001];
+void dfs(int N, int k)
+{
+    for (int i = 1; i <= N; i++)
+    {
+        if (!visit[i] && highways[i][k] ){
+            visit[i]=1;
+            dfs(N, i);
+        }
+    }
+}
+int main()
+{
+    fill(highways[0], highways[0] + 1001 * 1001, 0);
+    int N, M, K;
+    scanf("%d%d%d",&N,&M,&K);
+    for (int i = 1; i <= M; i++)
+    {
+        int x, y;
+         scanf("%d%d",&x,&y);
+        highways[x][y] = 1;
+        highways[y][x] = 1;
+    }
+    for (int i = 0; i < K; i++)
+    {
+        int x;
+       scanf("%d",&x);
+        int num = 0;
+        fill(visit, visit + 1001, 0);
+        visit[x] = 1;
+        for (int j = 1; j <= N; j++)
+        {
+            if (!visit[j])
+            {
+                dfs(N, j);
+                num++;
+            }
+        }
+        cout << num - 1<<endl;
+    }
+    system("pause");
+}
