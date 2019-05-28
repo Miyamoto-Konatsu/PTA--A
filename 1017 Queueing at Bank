@@ -1,0 +1,78 @@
+#include <bits/stdc++.h>
+using namespace std;
+struct customer
+{
+    int arr;
+    int ser;
+    int end = 0;
+    int wait;
+    customer(int arr, int ser, int wait) : arr(arr), ser(ser), wait(wait)
+    {
+        if (arr < 28800)
+            wait = 28800 - arr;
+        else
+            wait = 0;
+    }
+};
+int cmp(customer a, customer b)
+{
+    return a.arr < b.arr;
+}
+int main()
+{
+    int N, M;
+    cin >> N >> M;
+    vector<customer> cus;
+    vector<int> windows(M, 28800);
+    for (int i = 0; i < N; i++)
+    {
+        int a, b, c, d;
+        scanf("%d:%d:%d%d", &a, &b, &c, &d);
+        int arrive=((a * 60 + b) * 60) + c;
+        if ( arrive< 28800)
+            cus.push_back(customer(arrive, (d > 60 ? 60 : d) * 60, 28800 - arrive));
+        else if (arrive<= 61200)
+            cus.push_back(customer(arrive , (d > 60 ? 60 : d) * 60, 0));
+    }
+    sort(cus.begin(), cus.end(), cmp);
+    for (auto &it : cus)
+    {
+        if (it.arr < 28800)
+            it.arr = 28800;
+    }
+    for (int i = 0; i < cus.size(); i++)
+    {
+        int win = -1,flag=1, time_min = 9999999;
+        for (int j = 0; j < M; j++)
+        {
+            if (windows[j] <= cus[i].arr)
+            {
+                cus[i].wait += 0;
+                windows[j] = cus[i].arr+ cus[i].ser;
+                flag=0;
+                break;
+            }
+            if (windows[j] < time_min)
+            {
+                time_min = windows[j];
+                win = j;
+            }
+        }
+        if ( flag)
+        {               
+            cus[i].wait += windows[win] - cus[i].arr;
+            windows[win] +=  cus[i].ser;
+        }
+    }
+    double sum = 0;
+    if (cus.size() == 0)
+    {
+        cout << 0.0;
+        return 1;
+    }
+    for (auto it : cus){
+        sum += it.wait;    
+    }      
+    printf("%.1f", sum / 60 / cus.size());
+    system("pause");
+}
