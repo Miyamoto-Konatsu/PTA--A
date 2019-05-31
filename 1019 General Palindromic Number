@@ -1,0 +1,38 @@
+#include <bits/stdc++.h>
+using namespace std;
+int N, b;
+vector<int>c;
+int convert()
+{
+    vector<int> a;
+    while (N)
+    {
+        a .push_back (N % b);
+        N /= b;
+    }
+    vector<int>b(a);
+    reverse(b.begin(),b.end());
+    c=b;
+    return a==b;
+    
+}
+int main()
+{
+    cin >> N >> b;
+    if (N == 0)
+    {
+        cout << "Yes" << endl;
+        cout << 0;
+        system("pause");
+        return 0;
+    }
+    if (convert())
+        cout << "Yes" << endl;
+    else
+        cout << "No" << endl;
+    cout << c[0];
+    for (int i = 1; i < c.size(); i++)
+        cout << " " << c[i];
+    system("pause");
+    return 0;
+}
