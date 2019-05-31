@@ -1,0 +1,62 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int n;
+int maxheight=0;
+
+
+vector<int> v[10010];
+vector<int> temp;
+bool visit[10010];
+set<int> s;
+void dfs(int node,int height){
+    if(height>maxheight){
+        temp.clear();
+        temp.push_back(node);
+        maxheight=height;
+    }else if(height==maxheight){
+        temp.push_back(node);
+    }
+    visit[node]=true;
+    for(int i=0;i<v[node].size();i++){
+        if(visit[v[node][i]]==false){
+            dfs(v[node][i],height+1);
+        }
+    }
+}
+
+int main()
+{
+    int cnt=0;
+    int sr;
+    int a,b;
+    scanf("%d",&n);
+    for(int i=1;i<n;i++){
+        scanf("%d%d",&a,&b);
+        v[a].push_back(b);
+        v[b].push_back(a);
+    }
+    for(int i=1;i<=n;i++){
+        if(visit[i]==false){
+            dfs(i,0);
+            cnt++;
+            sr = temp[0];
+            for(int j=0;j<temp.size();j++){
+                s.insert(temp[j]);
+            }
+        }
+    }
+    if(cnt!=1){
+       printf("Error: %d components",cnt);
+    }else{
+        fill(visit,visit+10010,false);
+        temp.clear();
+        dfs(sr,0);
+        for(int i=0;i<temp.size();i++){
+            s.insert(temp[i]);
+        }
+        for(auto it=s.begin();it!=s.end();it++){
+            printf("%d\n",*it);
+        }
+    }
+}
