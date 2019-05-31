@@ -1,0 +1,167 @@
+#include <bits/stdc++.h>
+using namespace std;
+struct book
+{
+    string id;
+    string name;
+    string author;
+    vector<string> keys;
+    string store;
+    string year;
+    bool operator<(const book &a) const
+    {
+        return id < a.id;
+    }
+};
+vector<book> books;
+vector<string> split(string &str)
+{
+    vector<string> arr;
+    // stringstream 实现
+    string tem;
+    stringstream ss(str);
+    // 默认用空格作为分隔符
+    while (ss >> tem)
+        arr.push_back(tem);
+    return arr;
+}
+
+void query_name(string name)
+{
+    int num = 0;
+    for (int i = 0; i < books.size(); i++)
+    {
+        if (books[i].name == name)
+        {
+            cout << books[i].id << endl;
+            num++;
+        }
+    }
+    if (!num)
+    {
+        cout << "Not Found" << endl;
+    }
+}
+void query_author(string author)
+{
+    int num = 0;
+    for (int i = 0; i < books.size(); i++)
+    {
+        if (books[i].author == author)
+        {
+            cout << books[i].id << endl;
+            num++;
+        }
+    }
+    if (!num)
+    {
+        cout << "Not Found" << endl;
+    }
+}
+void query_year(string year)
+{
+    int num = 0;
+    for (int i = 0; i < books.size(); i++)
+    {
+        if (books[i].year == year)
+        {
+            cout << books[i].id << endl;
+            num++;
+        }
+    }
+    if (!num)
+    {
+        cout << "Not Found" << endl;
+    }
+}
+void query_store(string store)
+{
+    int num = 0;
+    for (int i = 0; i < books.size(); i++)
+    {
+        if (books[i].store == store)
+        {
+            cout << books[i].id << endl;
+            num++;
+        }
+    }
+    if (!num)
+    {
+        cout << "Not Found" << endl;
+    }
+}
+void query_keys(string keys)
+{
+    int num = 0;
+    for (int i = 0; i < books.size(); i++)
+    {
+        for (int j = 0; j < books[i].keys.size(); j++)
+        {
+            if (keys == books[i].keys[j])
+            {
+                cout << books[i].id << endl;
+                num++;
+                break;
+            }
+        }
+    }
+    if (!num)
+    {
+        cout << "Not Found" << endl;
+    }
+}
+int main()
+{
+    int N;
+    cin >> N;
+    cin.get();
+    string name, author, keys, store, id, year;
+    for (int i = 0; i < N; i++)
+    {
+        getline(cin, id);
+        getline(cin, name);
+        getline(cin, author);
+        getline(cin, keys);
+        getline(cin, store);
+        getline(cin, year);
+        books.push_back(book{id, name, author, split(keys), store, year});
+    }
+    sort(books.begin(),books.end());
+    int M;
+    cin >> M;
+    cin.get();
+    for (int i = 0; i < M; i++)
+    {
+        string input;
+        getline(cin, input);
+        string a = input.substr(3);
+        if (input[0] - '0' == 1)
+        {
+            cout << input << endl;
+            query_name(a);
+        }
+        if (input[0] - '0' == 2)
+        {
+            cout << input << endl;
+            query_author(a);
+        }
+        if (input[0] - '0' == 3)
+        {
+            cout << input << endl;
+            query_keys(a);
+        }
+        if (input[0] - '0' == 4)
+        {
+            cout << input << endl;
+            query_store(a);
+        }
+        if (input[0] - '0' == 5)
+        {
+            cout << input << endl;
+            query_year(a);
+        }
+    }
+
+    system("pause");
+    return 0;
+}
