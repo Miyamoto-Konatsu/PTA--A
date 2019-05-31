@@ -1,0 +1,69 @@
+#include <bits/stdc++.h>
+using namespace std;
+struct node
+{
+    int data;
+    node *left, *right;
+};
+node *tree;
+node *Init(vector<int> a, vector<int> b) //a为中序，b为后序
+{
+    node *no;
+    int i, j;
+    if (!a.size()){
+        return NULL;
+    }
+    no=new node;
+    no->data = b.back();
+    vector<int> c, d;
+    for (i = 0; a[i] != b.back(); i++) //左结点中序
+        c.push_back(a[i]);
+    for (j = i + 1; j < a.size(); j++) //右结点中序
+        d.push_back(a[j]);
+    vector<int>aa(b.begin(),b.begin()+c.size()); //左结点的后序
+    vector<int>bb(b.begin()+c.size(),b.end()-1); //右结点的后序
+    no->left=Init(c,aa);
+    no->right=Init(d,bb);
+    return no;
+}
+void traverse(node *tree){
+    vector<node>queue;
+    int head,tail;
+    head=tail=0;
+    node *no;
+    queue.push_back(*tree);
+    tail++;
+    cout<<queue[head].data;
+    while(head<tail){
+        if(queue[head].left){
+            queue.push_back(*(queue[head].left));
+            tail++;
+        }
+        if(queue[head].right){
+            queue.push_back(*(queue[head].right));
+            tail++;
+        }
+        head++;
+        if(head!=tail)
+        cout<<' '<<queue[head].data;
+    }
+}
+int main()
+{
+    int n,cc;
+    cin>>n;
+    vector<int>a;
+    vector<int>b;
+    for(int i=0;i<n;i++){
+        cin>>cc;
+        b.push_back(cc);
+    }
+    for(int i=0;i<n;i++){
+        cin>>cc;
+        a.push_back(cc);
+    }
+    tree=Init(a,b);
+    traverse(tree);
+    system("pause");
+    return 0;
+}
