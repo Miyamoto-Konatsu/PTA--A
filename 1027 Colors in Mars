@@ -1,0 +1,31 @@
+#include <bits/stdc++.h>
+using namespace std;
+char digit[13]={'0','1','2','3','4','5','6','7','8','9','A','B','C'};
+string convert(string a){
+    int num=stoi(a);
+    string b;
+    if(num==0)
+    b="00";
+    while(num){
+        b+=digit[num%13];
+        num/=13;
+    }
+    if(b.size()==1)
+    b+='0';
+    reverse(b.begin(),b.end());
+    return b;
+    
+
+}
+int main()
+{
+    string a,b,c;
+    cin>>a>>b>>c;
+    a=convert(a);
+    b=convert(b);
+    c=convert(c);
+    cout<<'#'<<a<<b<<c;
+
+    system("pause");
+    return 0;
+}
