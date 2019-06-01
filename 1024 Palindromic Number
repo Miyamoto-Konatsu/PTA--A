@@ -1,0 +1,33 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+string convert(string num1){
+    int len = num1.length(), c = 0; 
+    string num2 = num1, res = "";
+    reverse(num2.begin(), num2.end());
+    for(int i = 0; i<len; i++){
+        int tem = num1[i]+num2[i]-'0'-'0'+c;
+        c = tem/10;
+        res += tem%10+'0';
+    }
+    if(c) res += c+'0';
+    reverse(res.begin(), res.end());
+    return res;
+}
+int isPalindromic(string num){
+    string a(num);
+    reverse(a.begin(),a.end());
+    return num == a;
+}
+int main(){
+    string num;
+    int i, k;
+    cin >> num >> k;
+    for(i = 0; i<k; i++){
+        if(isPalindromic(num)) break;
+        num = convert(num);
+    } 
+    cout << num << "\n" << i ;
+    system("pause");
+    return 0;
+}
