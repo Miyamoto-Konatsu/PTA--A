@@ -1,0 +1,35 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    vector<int> m, n;
+    string a;
+    cin >> a;
+    vector<int> aa(100, 0), bb(100, 0);
+    for (int i = 0; i < a.size(); i++)
+    {
+        m.push_back(a[i] - '0');
+        aa[a[i] - '0']++;
+    }
+    n = m;
+    for (int i = n.size() - 1; i >= 0; i--)
+    {
+        n[i] += m[i];
+        if (n[i] > 9 && i >= 1)
+        {
+            int a = n[i] / 10;
+            n[i] = n[i] % 10;
+            n[i - 1] += a;
+        }
+        bb[n[i]]++;
+    }
+    if (aa == bb)
+        cout << "Yes" << endl;
+    else
+        cout << "No" << endl;
+    for (int i = 0; i < n.size(); i++)
+        cout << n[i];
+    system("pause");
+    return 0;
+}
