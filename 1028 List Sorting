@@ -1,0 +1,59 @@
+#include <bits/stdc++.h>
+using namespace std;
+int n, m;
+struct form
+{
+    string id, name;
+    int grade;
+};
+vector<form> stu;
+void print()
+{
+    for (int i = 0; i < n; i++)
+    {
+        printf("%s %s %d\n", stu[i].id.c_str(), stu[i].name.c_str(), stu[i].grade);
+    }
+}
+int cmp1(form a, form b)
+{
+    return a.id < b.id;
+}
+int cmp2(form a, form b)
+{
+    return a.name == b.name ? a.id < b.id : a.name < b.name;
+}
+int cmp3(form a, form b)
+{
+    return a.grade == b.grade ? a.id < b.id : a.grade < b.grade;
+}
+int main()
+{
+
+    cin >> n >> m;
+    for (int i = 0; i < n; i++)
+    {
+        string id, name;
+        int grade;
+        cin >> id >> name >> grade;
+        stu.push_back(form{id, name, grade});
+    }
+    if (m == 1)
+    {
+        sort(stu.begin(), stu.end(), cmp1);
+        print();
+    }
+
+    else if (m == 2)
+    {
+        sort(stu.begin(), stu.end(), cmp2);
+        print();
+    }
+    else
+    {
+        sort(stu.begin(), stu.end(), cmp3);
+        print();
+    }
+
+    system("pause");
+    return 0;
+}
