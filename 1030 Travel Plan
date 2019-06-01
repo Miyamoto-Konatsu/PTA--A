@@ -1,0 +1,77 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int inf = 100000;
+int c[501];
+int e[501][501];
+int cost[501][501];
+int visit[501];
+vector<vector<int>> path(501);
+int dis[501];
+vector<int> coo(501, 0);
+int N, M, S, D;
+void dijk()
+{
+    dis[S] = 0;
+    int u;
+    for (int i = 0; i < N; i++)
+    {
+        int min = inf;
+        for (int j = 0; j < N; j++)  
+            if (!visit[j] && dis[j] < min)
+            {
+                u = j;
+                min = dis[j];
+            }
+        visit[u] = 1;
+        for (int k = 0; k < N; k++)
+        {
+            if (dis[k] > dis[u] + e[u][k])
+            {
+                dis[k] = dis[u] + e[u][k];
+                path[k].clear();
+                path[k].push_back(u);
+                coo[k] = coo[u] + cost[u][k];
+            }
+            else if (dis[k] == dis[u] + e[u][k])
+                if (coo[k] > coo[u] + cost[u][k])
+                {
+                    path[k].clear();
+                    path[k].push_back(u);
+                    coo[k] = coo[u] + cost[u][k];
+            }   
+        }
+    }
+}
+int main()
+{
+    fill(dis, dis + 501, inf);
+    fill(visit, visit + 501, 0);
+    cin >> N >> M >> S >> D;
+    for (int i = 0; i < N; i++)
+        for (int j = 0; j < N; j++)
+            if (i == j)
+                e[i][j] = e[j][i] = 0;
+            else
+                e[i][j] = e[j][i] = inf;
+    for (int i = 0; i < M; i++)
+    {
+        int c1, c2, di, cos;
+        cin >> c1 >> c2 >> di >> cos;
+        e[c1][c2] = e[c2][c1] = di;
+        cost[c1][c2] = cost[c2][c1] = cos;
+    }
+    dijk();
+    vector<int> city;
+    int aa = D;
+    while (S != aa)
+    {
+        city.push_back(aa);
+        aa = path[aa][0];
+    }
+    cout << S;
+    for (int i = city.size() - 1; i >= 0; i--)
+        cout << ' ' << city[i];
+    cout << ' ' << dis[D] << ' ' << coo[D];
+    system("pause");
+    return 0;
+}
