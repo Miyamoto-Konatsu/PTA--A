@@ -1,0 +1,64 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct testee
+{
+    string id;
+    int score;
+    int location;
+    int rank_fi;
+    int rank_lo;
+    
+};
+vector<testee> student;
+int cmp(testee a, testee b)
+{
+    return a.score == b.score?a.id<b.id:a.score>b.score;
+}
+void sort_fi()
+{
+    sort(student.begin(), student.end(), cmp);
+    int rank = 1;
+    for (int i = 0; i < student.size(); i++)
+    {
+        student[i].rank_fi = rank;
+        if (i < student.size() - 1 && student[i + 1].score != student[i].score)
+            rank = i + 2;
+    }
+}
+void sort_lo(vector<testee> &stu)
+{
+    sort(stu.begin(), stu.end(), cmp);
+    int rank = 1;
+    for (int i = 0; i < stu.size(); i++)
+    {
+        stu[i].rank_lo = rank;
+        if (i < stu.size() - 1 && stu[i + 1].score != stu[i].score)
+            rank = i + 2;
+    }
+}
+int main()
+{
+    int N, per_num = 0, score,x;
+    cin >> N;
+    for (int i = 1; i <= N; i++)
+    {
+        vector<testee> ss;
+        cin >> x;
+        per_num += x;
+        for (int j = 0; j < x; j++)
+        {
+            string id;
+            cin >> id >> score;
+            ss.push_back(testee{id, score, i});
+        }
+        sort_lo(ss);
+        student.insert(student.end(), ss.begin(), ss.end());
+    }
+    sort_fi();
+    cout<<per_num<<endl;
+    for (int i = 0; i < student.size(); i++)
+        cout << student[i].id << ' ' << student[i].rank_fi << ' ' << student[i].location << ' ' << student[i].rank_lo << endl;  
+    system("pause");
+    return 0;
+}
