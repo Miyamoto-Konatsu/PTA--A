@@ -6,7 +6,7 @@
 
 4.遍历过一条边之后就把这条边的权值设为0（ G[u][v] = G[v][u] = 0;）防止出现回路遍历死循环*/
 
-//参考大佬代码
+//参考大佬代码 ，https://blog.csdn.net/liuchuo/article/details/52291920 原贴地址
 
 #include <bits/stdc++.h>
 using namespace std;
