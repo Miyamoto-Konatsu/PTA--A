@@ -1,0 +1,29 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    map<string,vector<int>>stu;
+    int N,M,a,b;
+    string name;
+    cin>>N>>M;
+    for(int i=0;i<M;i++){
+        cin>>a>>b;
+        for(int j=0;j<b;j++){
+            cin>>name;
+            stu[name].push_back(a);
+        }
+    }
+    for(auto &it:stu)
+    sort(it.second.begin(),it.second.end());
+    for(int i=0;i<N;i++){
+        cin>>name;
+        cout<<name<<' '<<stu[name].size();
+        for(int j=0;j<stu[name].size();j++)
+        printf(" %d",stu[name][j]);
+        cout<<endl;
+        
+    }
+    system("pause");
+    return 0;
+}
