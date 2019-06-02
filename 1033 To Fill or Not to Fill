@@ -1,0 +1,79 @@
+#include <bits/stdc++.h>
+
+//转自  https://blog.csdn.net/qq_33657357/article/details/82119923  原贴地址
+using namespace std;
+struct station{
+	double price;
+	double dis;
+    bool operator<(const station&a)const{
+        return dis<a.dis;
+    }
+}sta[505];
+
+int main()
+{
+	double cmax,distance,davg;
+	int n;
+	cin>>cmax>>distance>>davg>>n;
+	for(int i=0;i<n;i++)
+		cin>>sta[i].price>>sta[i].dis;
+	sta[n].price=0;
+	sta[n].dis=distance;
+	sort(sta,sta+n);
+	if(sta[0].dis!=0)//出发点没有加油站，走不了 
+		cout<<"The maximum travel distance = 0.00";
+	else
+	{
+		int now=0;//now是实时站点 
+		double prices=0,nowtank=0;//nowtank是油箱目前油量，prices是总花费 
+		double range=cmax*davg;//续航里程 
+		while(now<n)//达到目的地站点n之前一直循环 
+		{
+			int k=-1;
+			double Min_price=1000000000;
+			for(int i=now+1;i<=n&&sta[i].dis-sta[now].dis<=range;i++)//在续航里程内检索加油站 
+			{
+				if(sta[i].price<Min_price)//寻找里程内油价最低的加油站 
+				{
+					Min_price=sta[i].price;
+					k=i;
+					if(Min_price<sta[now].price)
+					//找到比当前加油站更便宜的加油站，立即退出循环，前往该加油站 
+						break; 
+				}
+			}
+			if(k==-1)//没有符合条件的加油站，退出循环 
+				break;
+			double need=(sta[k].dis-sta[now].dis)/davg; 
+			if(Min_price<sta[now].price)//里程范围里有比现在加油站便宜的油，直接进到目的地 
+			{
+				if(nowtank<need)//如果油箱的油不够达到目的地，补上恰好能到目的地的油 
+				{
+					prices+=(need-nowtank)*sta[now].price;
+					nowtank=0;
+				}
+				else//油箱的油足够到达目的地 
+					nowtank-=need;
+			}
+			else//接下来里程内没有比现在便宜的加油站，在当前的加油站把油箱加满(先加满最便宜的油) 
+			{
+				prices+=(cmax-nowtank)*sta[now].price;
+				nowtank=cmax-need;
+			}
+			now=k;//更新到目的地加油站 
+		}
+		if(now==n)
+			printf("%.2f",prices);
+		else//没有到达目的地，输出能达到的最大距离，即现在所在加油站和出发点的距离，和续航里程range 
+			printf("The maximum travel distance = %.2f",sta[now].dis+range);
+	}
+    system("pause");
+	return 0;
+}
+ 
+
+//我们把目的地看做一个油价为0，距离为distance的加油站，放到加油站数组的最后 
+//1.算法的核心思想是，如果在能达到的范围内有比现在油箱里的油更便宜的加油站
+//2.那就先加恰好能到那个加油站的油，到达目的加油站之后，再重复1st
+//3.如果在能抵达的范围内没有比油箱里的油更便宜的，就找范围内最便宜的加油站直接抵达
+//然后再站在新的站点上考虑里程范围内，重复1st 
