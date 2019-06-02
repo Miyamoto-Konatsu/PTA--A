@@ -1,0 +1,79 @@
+/*题目大意：给出1000条以内的通话记录A B和权值w，和阈值k，如果一个团伙人数超过2人并且通话总权值超过k，令团伙里面的自身权值的最大值为头目，输出所有满足条件的团伙的头目，和他们团伙里面的人数
+分析：总的来说是一个判断一个图的连通分量的个数，用图的遍历解决，深度优先遍历。
+1.因为给的是字母，要用两个map把它们转换成数字，从1开始排列命名所有不同的人的id，存储在两个map里面，一个字符串对应id，一个id对应字符串，方便查找，正好顺便统计了总共的人数idNumber。
+2.建立两个数组，weight和G，分别存储每条边的权值和每个结点的权值，因为这两个题目中都要求得后判断。
+3.用传递引用的方法深度优先dfs，这样传入的参数在dfs后还能保存想要求得的值
+
+4.遍历过一条边之后就把这条边的权值设为0（ G[u][v] = G[v][u] = 0;）防止出现回路遍历死循环*/
+
+//参考大佬代码
+
+#include <bits/stdc++.h>
+using namespace std;
+map<string, int> idToInt;
+map<int, string> intToId;
+map<string, int> gangs;
+int e[2001][2001] , weight[2001] , visit[2001] ;
+int numid = 1, k, n;
+int idtoint(string id)
+{
+    if (!idToInt[id])
+    {
+        idToInt[id] = numid;
+        intToId[numid] = id;
+        numid++;
+        return numid - 1;
+    }
+    else
+        return idToInt[id];
+}
+void dfs(int i, int &head, int &numbernum, int &weightall)
+{
+    visit[i] = 1;
+    numbernum++;
+    if (weight[i] > weight[head])
+        head = i;
+    for (int v = 1; v <= n; v++)
+    {
+        if (e[i][v] > 0)
+        {
+            weightall += e[v][i];
+            e[i][v] = e[v][i] = 0;
+            if (!visit[v])
+                dfs(v, head, numbernum, weightall);
+        }
+    }
+}
+int main()
+{
+    cin >> n >> k;
+    for (int i = 0; i < n; i++)
+    {
+        string a, b;
+        int t, id1, id2;
+        cin >> a >> b >> t;
+        id1 = idtoint(a);
+        id2 = idtoint(b);
+        weight[id1] += t;
+        weight[id2] += t;
+        e[id1][id2] += t;
+        e[id2][id1] += t;
+    }
+    for (int i = 1; i <= n; i++)
+    {
+        if (!visit[i])
+        {
+            int menbernum = 0, headint = i, weightall = 0;
+            dfs(i, headint, menbernum, weightall);
+            if (menbernum > 2 && weightall > k)
+                gangs[intToId[headint]] = menbernum;
+        }
+    }
+    cout << gangs.size() << endl;
+    for (auto it : gangs)
+    {
+        cout << it.first << ' ' << it.second << endl;
+    }
+    system("pause");
+    return 0;
+}
