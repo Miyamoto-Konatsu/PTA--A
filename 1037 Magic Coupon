@@ -1,0 +1,42 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    int N, M, x;
+    vector<int> a, b;
+    cin >> N;
+    for (int i = 0; i < N; i++)
+    {
+        scanf("%d", &x);
+        a.push_back(x);
+    }
+    cin >> M;
+    for (int i = 0; i < M; i++)
+    {
+        scanf("%d", &x);
+        b.push_back(x);
+    }
+    sort(a.begin(), a.end());
+    sort(b.begin(), b.end());
+    long long money = 0;
+    int time = min(N, M);
+    for (int i = 0; i < min(N, M) && a[0] < 0; i++)
+    {
+        if (a[i] * b[i] < 0)
+            break;
+        money += a[i] * b[i];
+        time--;
+    }
+    for (int i = a.size() - 1, j = b.size() - 1; i >= 0 && j >= 0; i--, j--)
+    {
+        if (!time)
+            break;
+        if (a[i] * b[j] < 0)
+            break;
+        money += a[i] * b[j];
+    }
+    cout << money;
+    system("pause");
+    return 0;
+}
