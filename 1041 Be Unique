@@ -1,0 +1,29 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    int num[10001] = {0};
+
+    int a, b, flag = 1;
+    cin >> a;
+    vector<int> aa;
+    while (a)
+    {
+        cin >> b;
+        aa.push_back(b);
+        num[b]++;
+        a--;
+    }
+    for (auto it : aa)
+        if (num[it] == 1)
+        {
+            cout << it;
+            flag = 0;
+            break;
+        }
+    if (flag)
+        cout << "None";
+    system("pause");
+    return 0;
+}
