@@ -1,0 +1,38 @@
+#include <bits/stdc++.h>
+using namespace std;
+struct card
+{
+    int i, j;
+    bool operator<(const card &a) const
+    {
+        return j < a.j;
+    }
+};
+char ch[5] = {'S', 'H', 'C', 'D', 'J'};
+
+int main()
+{
+    vector<card> jack;
+    for (int i = 0; i < 54; i++)
+        jack.push_back({i, i});
+    int n, m;
+    cin >> n;
+    int shuffl[54];
+    for (int i = 0; i < 54; i++)
+    {
+        cin >> m;
+        shuffl[i] = m;
+    }
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < 54; j++)
+            jack[j].j = shuffl[j];
+        sort(jack.begin(), jack.end());
+    }
+    cout << ch[jack[0].i / 13] << jack[0].i % 13 + 1;
+    for (int i = 1; i < 54; i++)
+        cout << ' ' << ch[jack[i].i / 13] << jack[i].i % 13 + 1;
+
+    system("pause");
+    return 0;
+}
