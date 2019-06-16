@@ -1,0 +1,90 @@
+#include <cstdio>
+#include <vector>
+using namespace std;
+int n, v, t;
+int a[100005];
+int minV = 999999999;
+vector<pair<int,int> > rs;
+
+int main()
+{
+    scanf("%d%d", &n, &v);
+    for (int i = 1; i <= n; ++i){
+        scanf("%d", &t);
+        a[i] = a[i-1] + t;
+    }
+    bool flag = false;
+    for (int i = 1; i <= n; ++i){ //枚举起点
+        int begin = i, end = n, mid, sumSeq;
+        while (begin < end){
+            mid = (begin + end)/2;
+            sumSeq = a[mid] - a[i-1];
+            if (sumSeq >= v){
+                end = mid;
+            }else {
+                begin = mid + 1;
+            }
+        }
+        sumSeq = a[end] - a[i-1];
+        if (sumSeq >= v){
+            if (sumSeq < minV){
+                minV = sumSeq;
+                rs.clear();
+                rs.push_back(make_pair(i, end));
+            }else if (sumSeq == minV){
+                rs.push_back(make_pair(i, end));
+            }
+        }
+    }
+    for (int i = 0; i < rs.size(); ++i){
+        printf("%d-%d\n", rs[i].first, rs[i].second);
+    }
+    return 0;
+}
+
+#include <bits/stdc++.h>
+using namespace std;
+struct out
+{
+    int a, b;
+};
+vector<out> output;
+
+int main()
+{
+    int n, m;
+    cin >> n >> m;
+    int *num = new int[n + 1];
+    for (int i = 1; i <= n; i++)
+        scanf("%d", &num[i]);
+    int max = INT_MAX, sum = 0;
+    for (int i = 1, j = 0; i <= n;)
+    {
+        if (j == n && sum < m)
+            break;
+        if (sum >= m)
+        {
+            if (sum < max)
+            {
+                max = sum;
+                output.clear();
+                output.push_back({i, j});
+            }
+            else if (sum == max)
+            {
+                output.push_back({i, j});
+            }
+            sum -= num[i];
+            i++;
+        }
+        else
+        {
+            j++;
+            sum += num[j];
+        }
+    }
+    for (int i = 0; i < output.size(); i++)
+        cout << output[i].a << '-' << output[i].b << endl;
+    system("pause");
+    return 0;
+}
