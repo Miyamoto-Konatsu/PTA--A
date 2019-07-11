@@ -1,0 +1,25 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int N,M,L;
+int dp[201],v[201];
+int main(){
+    cin>>N>>M;
+    int a;
+    for(int i=0;i<M;i++){
+        scanf("%d",&a);
+        if(!v[a])v[a]=i+1;
+    }
+    cin>>L;
+    for(int i=0;i<L;i++){
+        scanf("%d",&a);
+        if(v[a]) //如果是喜欢的颜色          
+        for(int j=M;j>=v[a];j--){    //排在当前的颜色和之后喜欢的颜色的数量全部与当前颜色的数量进行比较       
+            dp[j]=max(dp[j],dp[v[a]]+1);
+        }      
+    printf("%d\n",dp[M]); //输出最后一个喜欢颜色的值
+     system("pause");
+    return 0;
+}
+
+
