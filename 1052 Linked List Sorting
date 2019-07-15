@@ -1,0 +1,52 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int maxsize = 1e5 + 5;
+struct Node
+{
+    int ad, data, next; 
+};
+
+vector<Node> a, b;
+bool cmp(Node a, Node b)
+{
+    return a.data < b.data;
+}
+int main()
+{
+    int start, n, cnt = 0;
+    scanf("%d%d", &n, &start);
+    a.resize(maxsize);
+    int ad, key, next;
+    for (int i = 0; i < n; i++)
+    {
+        scanf("%d%d%d", &ad, &key, &next);
+        a[ad] = {ad, key, next};
+    }
+    for (int i = start; i != -1; i = a[i].next)
+    {
+        b.push_back(a[i]);
+    }
+    sort(b.begin(), b.end(), [](Node a, Node b) { return a.data < b.data;});
+    if (start == -1)
+    {
+        printf("0 -1\n");
+    }
+    else
+    {
+        printf("%d %05d\n", b.size(), b[0].ad); 
+        for (int i = 0; i < b.size(); i++)
+        {
+            if (i != b.size() - 1)
+            {
+                printf("%05d %d %05d\n", b[i].ad, b[i].data, b[i + 1].ad);
+            }
+            else
+            {
+                printf("%05d %d -1\n", b[i].ad, b[i].data); 
+            }
+        }
+    }
+    system("pause");
+    return 0;
+}
