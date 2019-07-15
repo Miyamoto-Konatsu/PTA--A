@@ -1,0 +1,64 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int m, n, w;
+struct Node
+{
+    int id;
+    int data;
+    vector<int> son;
+};
+
+vector<vector<int>> ans;
+void dfs(vector<Node> node, int no, vector<int> a, int sum)
+{
+    a.push_back(node[no].data);
+    sum += node[no].data;
+    if (sum == w && !node[no].son.size())
+    {
+        ans.push_back(a);
+        return;
+    }
+    else if (sum > w)
+        return;
+    else
+    {
+        for (int i = 0; i < node[no].son.size(); i++)
+        {
+            dfs(node, node[no].son[i], a, sum);
+        }
+    }
+}
+int main()
+{
+    cin >> m >> n >> w;
+    vector<Node> node(m);
+    for (int i = 0; i < m; i++)
+        cin >> node[i].data;
+    for (int i = 0; i < n; i++)
+    {
+        int id, k, temp;
+        cin >> id >> k;
+        for (int j = 0; j < k; j++)
+        {
+            cin >> temp;
+            node[id].son.push_back(temp);
+        }
+    }
+    vector<int> a;
+    dfs(node, 0, a, 0);
+    sort(ans.begin(), ans.end(), [](vector<int> a, vector<int> b) { return a > b; });
+    for (int i = 0; i < ans.size(); i++)
+    {
+        for (int j = 0; j < ans[i].size(); j++)
+        {
+            if (j == 0)
+                cout << ans[i][j];
+            else
+                cout << ' ' << ans[i][j];
+        }
+        cout << endl;
+    }
+    system("pause");
+    return 0;
+}
