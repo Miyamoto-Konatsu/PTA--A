@@ -1,0 +1,24 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int N, M, a=0,b;
+int dis[100001]={0};
+int main()
+{
+    cin >> N;
+    for (int i = 1; i <= N; i++){
+           scanf("%d",&a);
+            dis[i]=a+dis[i-1];
+    }  
+    cin>>M;
+    for(int i=0;i<M;i++){
+        scanf("%d%d",&a,&b);
+        a--;b--;
+        int c=0,d=0;
+        c=dis[max(a,b)]-dis[min(a,b)];
+        d=dis[N]-dis[max(a,b)]+dis[min(a,b)];
+        printf("%d\n",min(c,d));
+    }
+    system("pause");
+    return 0;
+}
