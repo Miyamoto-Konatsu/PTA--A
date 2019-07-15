@@ -1,0 +1,54 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+ 
+int main(void)
+{
+	//freopen("in.txt", "r", stdin);
+	int np, ng;//总人数， 每组人数
+	cin >> np >> ng;
+	vector<int> wgt(np), list(np), rank(np);//分别为分数， pk的人员编号， 排名
+	for (int i = 0; i < np; i++)
+		cin >> wgt[i];
+	for (int i = 0; i < np; i++)
+		cin >> list[i];
+ 
+	while (list.size() > 1)//pk人数=1跳出循环
+	{
+		int now_rank = list.size() / ng + 1;//目前的排名
+		if (list.size() % ng > 0)//有多余的要+1
+			now_rank++;
+ 
+		vector<int> pro;//存储晋级的人员
+		int i = 0;
+		while (i < list.size())
+		{
+			int max = -1;
+			int m_id;
+			for (int j = 0; j < ng && i < list.size(); j++, i++)//找出晋级人员
+			{
+				rank[list[i]] = now_rank;//排名赋值
+				if (wgt[list[i]] > max)
+				{
+					max = wgt[list[i]];
+					m_id = list[i];
+				}
+			}
+ 
+			pro.push_back(m_id);
+		}
+		list = pro;
+	}
+	rank[list[0]] = 1;//第一名
+ 
+	for (int i = 0; i < np; i++)
+	{
+		if (i == 0)
+			cout << rank[i];
+		else
+			cout << ' ' << rank[i];
+	}
+	cout << endl;
+ 
+	return 0;
+}
