@@ -1,0 +1,69 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int maxn=1e5+5;
+int sqrN=361;
+int block[361];
+int table[maxn];
+stack<int> st;
+
+void Push(int x)
+{
+	st.push(x);
+	block[x/sqrN]++;
+	table[x]++;
+}
+void Pop()
+{
+	int t=st.top();
+	st.pop();
+	block[t/sqrN]--;
+	table[t]--;
+	printf("%d\n",t);
+}
+void PeekMedian(int k)
+{
+	int sum=0,index=0;
+	while(sum+block[index]<k)
+	{
+		sum+=block[index++];
+	}
+	int num=index*sqrN;
+	while(sum+table[num]<k)
+	{
+		sum+=table[num++];
+	}
+	printf("%d\n",num);
+}
+int main()
+{
+	char s[25];
+	int T,x,k;scanf("%d",&T);
+	while(T--)
+	{
+		scanf("%s",s);
+		if(strcmp(s,"Push")==0)
+		{
+			scanf("%d",&x);
+			Push(x);
+		}
+		else if(strcmp(s,"Pop")==0)
+		{
+			if(st.empty())
+            puts("Invalid");
+			else Pop();
+		}
+		else
+		{
+			if(st.empty())puts("Invalid");
+			else 
+			{
+				int n=st.size();
+				if(n%2)PeekMedian((n+1)/2);
+				else PeekMedian(n/2);
+			}
+		}
+	}
+    system("pause");
+    return 0;
+}
