@@ -1,0 +1,25 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+long long a,b,c;
+long long d,e,f; 
+char aa;
+long long con1(long long a,long long b,long long c){
+	 return a*29*17+b*29+c;
+}
+void con2(long long num){
+	
+	long long a=num/29/17;
+	long long b=(num-a*29*17)/29;
+	long long c=num-b*29-a*29*17;
+	printf("%d.%d.%d",a,b,c);
+}
+int main()
+{
+	cin>>a>>aa>>b>>aa>>c;
+	cin>>d>>aa>>e>>aa>>f;
+	con2(con1(a+d,b+e,c+f));
+
+    system("pause");
+    return 0;
+}
