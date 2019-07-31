@@ -1,0 +1,45 @@
+#include <bits/stdc++.h>
+using namespace std;
+string days[7] = {"MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"};
+
+int main()
+{
+	string s1, s2, s3, s4;
+	cin >> s1 >> s2 >> s3 >> s4;
+	char D, H;
+	int h, M;
+	int flag = 0;
+	for (int i = 0; i < s1.size(); i++)
+	{
+		if (s1[i] <= 'G' && s1[i] >= 'A' && s2[i] == s1[i] && !flag)
+		{
+			flag = 1;
+			D = s1[i];
+		}
+		else if (flag && (('0' <= s1[i] && s1[i] <= '9') || ('A' <= s1[i] && s1[i] <= 'N')) && s2[i]==s1[i])
+		{
+			H = s1[i];
+			break;
+		}
+	}
+	for (int i = 0; i < s3.size(); i++)
+	{
+		if (s3[i] == s4[i] && isalpha(s3[i]))
+		{
+			M = i;
+			break;
+		}
+	}
+	cout << days[D - 'A'] << " ";
+	if (isdigit(H))
+	{
+		h = H - '0';
+	}
+	else
+	{
+		h = H - 'A' + 10;
+	}
+	printf("%02d:%02d", h, M);
+	system("pause");
+	return 0;
+}
