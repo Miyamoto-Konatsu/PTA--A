@@ -1,0 +1,39 @@
+#include <bits/stdc++.h>
+using namespace std;
+/*
+完全搜索二叉树的中序遍历，得到的数字非递减排序
+*/
+int n, m;
+int out[2010];
+int i=1;
+vector<int> nums(1,-1);
+void findnode(int root)
+{
+	if(root<=n)
+	{
+		findnode(2*root);
+		out[root]=nums[i];
+		i++;
+		findnode(root*2+1);
+	}
+}
+
+int main()
+{
+
+	cin >> n;
+	for (int i = 0; i < n; i++)
+	{
+		cin >> m;
+		nums.push_back(m);
+	}
+	sort(nums.begin(), nums.end());
+	findnode(1);
+	cout<<out[1];
+	for(int i=2;i<=n;i++)
+	{
+		cout<<' '<<out[i];
+	}
+	system("pause");
+	return 0;
+}
