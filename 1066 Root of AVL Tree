@@ -1,0 +1,92 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct node
+{
+	int data;
+	struct node *left, *right;
+};
+node* leftRotate(node *t)
+{
+	node *p = t->right;
+	t->right = p->left;
+	p->left = t;
+	return p;
+}
+node* rightRotate(node *t)
+{
+	node *p = t->left;
+	t->left = p->right;
+	p->right = t;
+	return p;
+}
+node* rightleftRotate(node *t)
+{
+	
+	t->right=rightRotate(t->right);
+	return leftRotate(t);
+}
+
+node* leftrightRotate(node *t)
+{
+	
+	t->left=leftRotate(t->left);
+	return rightRotate(t);
+}
+
+int GetHeight(node *t)
+{
+	if(t==NULL) return 0;
+	return max(GetHeight(t->left),GetHeight(t->right))+1;
+}
+node *AVL(node *no, int data)
+{
+	if (no == NULL)
+	{
+		
+		no = new node();
+		no->data = data;
+		no->left =  NULL;
+		no->right = NULL;
+	}
+	else if (data < no->data)
+	{
+		
+		no->left=AVL(no->left,data);
+		if(GetHeight(no->left)-GetHeight(no->right)>1)
+		{
+			if(data<no->left->data)
+				no=rightRotate(no);
+			else
+				no=leftrightRotate(no);
+		}
+	}
+	else
+	{
+		no->right=AVL(no->right,data);
+		if(GetHeight(no->right)-GetHeight(no->left)>1)
+		{
+			if(data>no->right->data)
+				no=leftRotate(no);
+			else
+				no=rightleftRotate(no);
+		}
+	}
+	return no;
+}
+
+int main()
+{
+	int n,m;
+	cin>>n;
+	node *root=NULL;
+	for(int i=0;i<n;i++)
+	{
+		cin>>m;
+		root=AVL(root,m);
+		
+	}
+	cout<<root->data;
+	system("pause");
+	return 0;
+}
