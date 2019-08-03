@@ -4,7 +4,6 @@ using namespace std;
  
 int main(void)
 {
-	//freopen("in.txt", "r", stdin);
 	int np, ng;//总人数， 每组人数
 	cin >> np >> ng;
 	vector<int> wgt(np), list(np), rank(np);//分别为分数， pk的人员编号， 排名
