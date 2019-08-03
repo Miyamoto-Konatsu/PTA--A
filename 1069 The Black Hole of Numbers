@@ -1,0 +1,28 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int calculate(string a)
+{
+	while(a.size()<4)
+	a.push_back('0');
+	string b(a);
+	sort(a.begin(), a.end(), greater<char>());
+	sort(b.begin(), b.end());
+	int d = stoi(a) - stoi(b);
+	printf("%04d - %04d = %04d\n", stoi(a), stoi(b), d);
+	return (d);
+}
+
+int main()
+{
+	int a;
+	cin >> a;
+	while (1)
+	{
+		a = calculate(to_string(a));
+		if (a == 6174 || a == 0)
+			break;
+	}
+	system("pause");
+	return 0;
+}
