@@ -1,0 +1,102 @@
+#include <bits/stdc++.h>
+#include <ctype.h>
+using namespace std;
+const int inf = 1000000;
+int dis[1020][1020];
+int visited[1020];
+int sho[1020];
+struct station
+{
+	string name;
+	int ok = 1;
+	float min_dis = inf;
+	float ave_dis = 0;
+};
+
+int n, m, road, server_dis;
+
+int getID(string a)
+{
+	if (isalpha(a[0]))
+	{
+		return n + stoi(a.substr(1));
+	}
+	return stoi(a);
+}
+void dijk(int id, vector<station> &gas)
+{
+	memset(visited, 0, sizeof(visited));
+	fill(sho, sho + 1020, inf);
+	sho[id + n] = 0;
+	for (int i = 1; i <= n + m; i++)
+	{
+		int next = -1, min_dis = inf;
+		for (int j = 1; j <= n + m; j++)
+		{
+			if (sho[j] < min_dis && !visited[j])
+			{
+				min_dis = sho[j];
+				next = j;
+			}
+		}
+		visited[next] = 1;
+		for (int j = 1; j <= n + m; j++)
+		{
+
+			if (sho[j] > sho[next] + dis[next][j] && next != -1)
+			{
+				sho[j] = sho[next] + dis[next][j];
+			}
+		}
+	}
+	for (int i = 1; i <= n; i++)
+	{
+		gas[id].ave_dis += sho[i];
+		if (sho[i] < gas[id].min_dis)
+			gas[id].min_dis = sho[i];
+		if (sho[i] > server_dis)
+			gas[id].ok = 0;
+	}
+	gas[id].name = 'G' + to_string(id);
+	gas[id].ave_dis /= n;
+}
+int cmp(station a, station b)
+{
+	if (a.ok != b.ok)
+		return a.ok > b.ok;
+	if (a.min_dis != b.min_dis)
+		return a.min_dis > b.min_dis;
+	if (a.ave_dis != b.ave_dis)
+		return a.ave_dis < b.ave_dis;
+	return a.name < b.name;
+}
+int main()
+{
+	cin >> n >> m >> road >> server_dis;
+	fill(dis[0], dis[0] + 1020 * 1020, inf);
+	vector<station> gas(m + 1);
+	for (int i = 0; i < road; i++)
+	{
+		string a, b;
+		int c;
+		int d, e;
+		cin >> a >> b >> c;
+		d = getID(a);
+		e = getID(b);
+		dis[d][e] = dis[e][d] = c;
+	}
+	for (int i = 1; i <= m; i++)
+	{
+		dijk(i, gas);
+	}
+	sort(gas.begin()+1, gas.end(), cmp);
+	if (!gas[1].ok)
+		cout << "No Solution";
+	else
+	{
+	printf("%s\n%.1f %.1f\n", gas[1].name.c_str(), gas[1].min_dis, gas[1].ave_dis);
+	}
+
+	system("pause");
+	return 0;
+}
