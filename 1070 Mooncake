@@ -1,0 +1,44 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct mooncake
+{
+	float amounts, price, unit_price;
+};
+
+int main()
+{
+	int n, m;
+	cin >> n >> m;
+	vector<mooncake> mo(n);
+	for (int i = 0; i < n; i++)
+	{
+		cin >> mo[i].amounts;
+	}
+	for (int i = 0; i < n; i++)
+	{
+		cin >> mo[i].price;
+		mo[i].unit_price = mo[i].price / mo[i].amounts;
+	}
+	sort(mo.begin(), mo.end(), [](mooncake a, mooncake b) { return a.unit_price > b.unit_price; });
+	int i = 0;
+	float get = 0;
+	while (m)
+	{
+		if (m >= mo[i].amounts)
+		{
+			get += mo[i].price;
+			m -= mo[i].amounts;
+		}
+		else
+		{
+			get += mo[i].unit_price * m;
+			m = 0;
+		}
+		if(++i>n)
+		break;
+	}
+	printf("%.2f",get);/*  */
+	system("pause");
+	return 0;
+}
