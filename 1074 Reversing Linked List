@@ -1,0 +1,46 @@
+#include <bits/stdc++.h>
+using namespace std;
+struct node
+{
+	int addr, data, next;
+};
+int first;
+int n, m;
+vector<node> no;
+node a[100010];
+
+void rever(int start)
+{
+	reverse(no.begin()+start,no.begin()+start+m);
+}
+int main()
+{
+	cin >> first >> n >> m;
+	int addr, data, next;
+	for (int i = 0; i < n; i++)
+	{
+		cin >> addr >> data >> next;
+		a[addr].addr = addr;
+		a[addr].data = data;
+		a[addr].next = next;
+	}
+	for (int i = 0; i < n; i++)
+	{
+		no.push_back({a[first].addr,a[first].data,a[first].next});
+		first = a[first].next;
+		if(first==-1)
+		break;
+	}
+	for (int i = 0; i < no.size() / m; i++)
+	{
+		rever(i*m);
+	}
+	for (int i = 0; i < no.size()-1; i++)
+	{
+		printf("%05d %d %05d\n",no[i].addr,no[i].data,no[i+1].addr);
+	}
+	printf("%05d %d -1",no[no.size()-1].addr,no[no.size()-1].data);
+
+	system("pause");
+	return 0;
+}
