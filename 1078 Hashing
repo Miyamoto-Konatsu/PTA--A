@@ -1,0 +1,53 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int Prime(int a)
+{
+	for (int i = 2; i <= sqrt(a); i++)
+	{
+		if (a % i == 0)
+			return 0;
+	}
+	return 1;
+}
+int returnPrime(int a)
+{
+	if (a < 2)
+		return 2;
+	while (!Prime(a))
+	{
+		a++;
+	}
+	return a;
+}
+int main()
+{
+	int n, m;
+	cin >> n >> m;
+	n = returnPrime(n);
+	int *hash = new int[n];
+	fill(hash, hash + n, 0);
+	for (int i = 0; i < m; i++)
+	{
+		int a, flag=0;
+		cin >> a;
+		for (int j = 0; j < n; j++)
+		{
+			if (!hash[(a + j * j) % n])
+			{
+				flag=1;
+				hash[(a + j * j) % n] = 1;
+				if (i == 0)
+					cout << (a + j * j) % n;
+				else
+					cout << ' ' << (a + j * j) % n;
+				break;
+			}
+		}
+		if (!flag)
+			cout << " -";
+		
+	}
+	system("pause");
+	return 0;
+}
