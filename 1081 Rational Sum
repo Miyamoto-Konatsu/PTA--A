@@ -1,0 +1,37 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+long long gcd(long long a, long long b)
+{
+    return a % b == 0 ? b : gcd(b, a % b);
+}
+int main()
+{
+    int n;
+    cin >> n;
+    long long a, b;
+    scanf("%lld/%lld", &a, &b);
+    for (int i = 1; i < n; i++)
+    {
+        long long c, d;
+        scanf("%lld/%lld", &c, &d);
+        long long g = b / gcd(b, d) * d;
+        a = g / b * a + g / d * c;
+        b = g;
+    }
+    long long integer = a / b;
+    a = a - integer * b;
+    long long  g = gcd(a, b);
+    a = a / g;
+    b = b / g;
+    if (integer == 0 && a == 0)
+        cout << 0;
+    if (integer != 0)
+        cout << integer;
+    if (a != 0 && integer != 0)
+        cout << " " << a << '/' << b;
+    if (a != 0 && integer == 0)
+        cout << a << '/' << b;
+    system("pause");
+    return 0;
+}
