@@ -69,7 +69,6 @@ int main()
     }
     
     tree = Init(pre, ord);
-    
     traverse(tree);
     system("pause");
     return 0;
