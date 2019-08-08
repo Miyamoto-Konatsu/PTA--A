@@ -1,0 +1,76 @@
+#include <bits/stdc++.h>
+using namespace std;
+struct node
+{
+    int data;
+    node *left, *right;
+};
+int flag = 1;
+node *tree;
+node *Init(vector<int> a, vector<int> b) //a为前序，b为中序
+{
+    
+    node *no;
+    int i, j;
+    if (b.empty())
+        return NULL;
+    no = new node;
+    no->data = a[0];
+    vector<int> c, d;
+    for (i = 0; b[i] != a[0]; i++) //左结点中序
+        c.push_back(b[i]);
+    for (j = i + 1; j < b.size(); j++) //右结点中序
+        d.push_back(b[j]);
+    vector<int> aa(a.begin()+1, a.begin() +1+ c.size());   //左结点的前序
+    vector<int> bb(a.begin() + c.size()+1, a.end() ); //右结点的前序
+    no->left = Init(aa, c);
+    no->right = Init(bb, d);
+    return no;
+}
+void traverse(node *tree)
+{
+    if (tree != NULL)
+    {
+        traverse(tree->left);
+        traverse(tree->right);
+        if (flag)
+        {
+            cout << tree->data;
+            flag = 0;
+        }
+
+        else
+            cout << ' ' << tree->data;
+    }
+}
+int main()
+{
+    int n;
+    cin >> n;
+    vector<int> pre; //前序序列
+    vector<int> ord; //中序序列
+    stack<int> temp;
+    for (int i = 0; i < 2 * n; i++)
+    {
+        string a;
+        int b;
+        cin >> a;
+        if (a == "Push")
+        {
+            cin >> b;
+            pre.push_back(b);
+            temp.push(b);
+        }
+        else
+        {
+            ord.push_back(temp.top());
+            temp.pop();
+        }
+    }
+    
+    tree = Init(pre, ord);
+    
+    traverse(tree);
+    system("pause");
+    return 0;
+}
