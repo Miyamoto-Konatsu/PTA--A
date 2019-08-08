@@ -1,0 +1,37 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct stu
+{
+    string name,id;
+    int grade;
+    bool operator<(const stu &a) const
+    {
+        return grade>a.grade;
+    }
+
+};
+int main(){
+    int n;
+    cin>>n;
+    vector<stu>s(n);
+    for(int i=0;i<n;i++)
+    {
+        cin>>s[i].name>>s[i].id>>s[i].grade;
+    }
+    sort(s.begin(),s.end());
+    int a,b,flag=0;
+    cin>>a>>b;
+    for(int i=0;i<n;i++)
+    {
+        if(s[i].grade<=b&&s[i].grade>=a)
+        {
+            cout<<s[i].name<<' '<<s[i].id<<endl;
+            flag=1;
+        }
+    }
+    if(!flag)
+    cout<<"NONE";
+    system("pause");
+    return 0;
+}
