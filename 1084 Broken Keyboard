@@ -1,0 +1,22 @@
+#include <bits/stdc++.h>
+using namespace std;
+map<char,int>out;
+int main(){
+    string a,b;
+    cin>>a>>b;
+    for(int i=0;i<b.size();i++)
+    {
+        out[toupper(b[i])]=1;
+    }
+     for(int i=0;i<a.size();i++)
+    {
+        if(!out[toupper(a[i])])
+        {
+            char bb=toupper(a[i]);
+            cout<<bb;
+            out[toupper(a[i])]=1;
+        }
+    }
+    system("pause");
+    return 0;
+}
