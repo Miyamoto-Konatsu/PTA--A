@@ -1,0 +1,100 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct node
+{
+    int id, happiness;
+};
+int n, m;
+map<string, node> city;
+map<int, string> id;
+int e[201][201];
+int visit[201];
+string start;
+int cost_least = INT_MAX;
+vector<vector<int>> ans;
+void dfs(int cost, int b, vector<int> least)
+{
+    if (id[b] == "ROM")
+    {
+        if (cost < cost_least)
+        {
+            cost_least = cost;
+            ans.clear();
+            ans.push_back(least);
+        }
+        else if (cost == cost_least)
+            ans.push_back(least);
+        return;
+    }
+    visit[b] = 1;
+    for (int i = 1; i < n; i++)
+    {
+        if (e[b][i] && !visit[i])
+        {
+            least.push_back(i);
+            dfs(cost + e[b][i], i, least);
+            visit[i] = 0;
+            least.pop_back();
+        }
+    }
+}
+int main()
+{
+    cin >> n >> m >> start;
+    id[0] = start;
+    city[start].id = 0;
+    city[start].happiness = 0;
+    for (int i = 1; i < n; i++)
+    {
+        string a;
+        int b;
+        cin >> a >> b;
+        id[i] = a;
+        city[a].happiness = b;
+        city[a].id = i;
+    }
+    for (int i = 0; i < m; i++)
+    {
+        string a, b;
+        int c;
+        cin >> a >> b >> c;
+        e[city[a].id][city[b].id] = e[city[b].id][city[a].id] = c;
+    }
+    vector<int> least;
+    least.push_back(0);
+    dfs(0, 0, least);
+    cout << ans.size() << ' ' << cost_least << ' ';
+    int max_happness = 0, ave_happiness = 0, route;
+    for (int i = 0; i < ans.size(); i++)
+    {
+        int temp = 0;
+        for (int j = 0; j < ans[i].size(); j++)
+        {
+            temp += city[id[ans[i][j]]].happiness;
+        }
+        if (temp > max_happness)
+        {
+            max_happness = temp;
+            ave_happiness = temp / (ans[i].size()-1);
+            route = i;
+        }
+        else if (temp == max_happness)
+        {
+            if (temp /  (ans[i].size()-1)> ave_happiness)
+            {
+                ave_happiness = temp /  (ans[i].size()-1);
+                route = i;
+            }
+        }
+    }
+    cout << max_happness << ' ' << ave_happiness<<endl;
+    for (int i = 0; i < ans[route].size(); i++)
+    {
+        if (i != 0)
+            cout << "->";
+        cout << id[ans[route][i]];
+    }
+    system("pause");
+    return 0;
+}
