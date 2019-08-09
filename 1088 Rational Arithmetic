@@ -1,0 +1,108 @@
+#include <bits/stdc++.h>
+using namespace std;
+struct refs {
+	long long up, down;
+};
+ 
+long long gcd(long long a, long long b) {
+	if (b == 0) return a;
+	else return gcd(b, a%b);
+}
+ 
+refs simplify(refs obj) {
+	if (obj.up == 0) {
+		obj.up = 0, obj.down = 1;
+		return obj;
+	}
+	if (obj.down < 0) { //交换负数
+		obj.up = -obj.up;
+		obj.down = -obj.down;
+	}
+	long long gcdNum = gcd(abs(obj.up), abs(obj.down));
+	obj.up /= gcdNum;
+	obj.down /= gcdNum;
+	return obj;
+}
+ 
+refs sadd(refs obj1,refs obj2) {
+	refs obj;
+	obj.down = obj1.down*obj2.down;
+	obj.up = obj1.up*obj2.down + obj2.up*obj1.down;
+	return simplify(obj);
+}
+ 
+refs ssub(refs obj1, refs obj2) {
+	refs obj;
+	obj.down = obj1.down*obj2.down;
+	obj.up = obj1.up*obj2.down - obj2.up*obj1.down;
+	return simplify(obj);
+}
+ 
+refs smulty(refs obj1, refs obj2) {
+	refs obj;
+	obj.down = obj1.down*obj2.down;
+	obj.up = obj1.up * obj2.up;
+	return simplify(obj);
+}
+ 
+refs sdiv(refs obj1, refs obj2) {
+	refs obj;
+	obj.up = obj1.up * obj2.down;
+	obj.down = obj1.down*obj2.up;
+	return simplify(obj);
+}
+ 
+void showRes(refs sobj) {
+	if (sobj.up == 0) {
+		printf("0");
+	}
+	else if (sobj.down == 0) {
+		printf("Inf");
+	}
+	else {
+		if (sobj.up < 0) printf("(");
+		if (abs(sobj.up) > abs(sobj.down)) {
+			if (abs(sobj.up) % abs(sobj.down) == 0) {
+				printf("%lld", sobj.up / sobj.down);
+			}
+			else {
+				printf("%lld %lld/%lld", sobj.up / sobj.down, abs(sobj.up % sobj.down), abs(sobj.down));
+			}
+		}
+		else if(abs(sobj.up) == abs(sobj.down)){
+			printf("%lld", sobj.up/sobj.down);
+		}
+		else {
+			printf("%lld/%lld", sobj.up, sobj.down);
+		}
+		if (sobj.up < 0) printf(")");
+	}
+}
+ 
+int main() {
+	refs input1, input2;
+	scanf("%lld/%lld %lld/%lld", &input1.up, &input1.down, &input2.up, &input2.down);
+	refs obbj[4];
+	char tools[4] = { '+','-','*','/' };
+	int index = 0;
+	obbj[index++]= sadd(input1, input2);
+	obbj[index++] = ssub(input1, input2);
+	obbj[index++] = smulty(input1, input2);
+	obbj[index++] = sdiv(input1, input2);
+	//化简input
+	refs sinput1, sinput2;
+	sinput1 = simplify(input1);
+	sinput2 = simplify(input2);
+	
+	for (int i = 0; i < 4; ++i) {
+		showRes(sinput1);
+		printf(" %c ", tools[i]);
+		showRes(sinput2);
+		printf(" = ");
+		showRes(obbj[i]);
+		printf("\n");
+	}
+	
+	system("PAUSE");
+	return 0;
+}
