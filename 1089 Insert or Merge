@@ -1,0 +1,83 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int n;
+vector<int> a;
+vector<int> b;
+void print(vector<int> a)
+{
+    for (int i = 0; i < a.size(); i++)
+    {
+        if (i != 0)
+            cout << ' ';
+        cout << a[i];
+    }
+}
+int in; //判断是否是插入排序
+void insert()
+{
+    for (int i = 1; i < a.size(); i++)
+    {
+        for (int j = i - 1; j >= 0; j--)
+            if (a[j + 1] < a[j])
+                swap(a[j + 1], a[j]);
+            else if (a == b)
+            {
+                in = 1;
+                cout << "Insertion Sort" << endl;
+                for (int k = i + 1; k < a.size(); k++)
+                {
+                    for (int j = k - 1; j >= 0; j--)
+                        if (a[j + 1] < a[j])
+                            swap(a[j + 1], a[j]);
+                        else
+                        {  
+                            print(a);
+                            return;
+                        }
+                    print(a);
+                    return;
+                }
+            }
+    }
+}
+int flag; //判断是否是归并排序
+void merge(int s, vector<int> c)
+{
+    for (int i = 0; i < c.size(); i += s)
+    {
+        if (i + s > a.size())
+            sort(c.begin() + i, c.end());
+        else
+            sort(c.begin() + i, c.begin() + i + s);
+    }
+    if (flag)
+    {
+        print(c);
+        return;
+    }
+    if (c == b)
+    {
+        cout << "Merge Sort" << endl;
+        flag = 1;
+    }
+    merge(2 * s, c);
+}
+int main()
+{
+
+    int n;
+    cin >> n;
+    a.resize(n);
+    b.resize(n);
+    for (int i = 0; i < n; i++)
+        cin >> a[i];
+    for (int i = 0; i < n; i++)
+        cin >> b[i];
+    vector<int> c(a);
+    insert();
+    if (!in)
+        merge(2, c);
+    system("pause");
+    return 0;
+}
