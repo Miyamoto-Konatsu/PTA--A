@@ -1,0 +1,21 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    string in;
+    cin >> in;
+    long long p = 0, a = 0, pat = 0;
+    for (int i = 0; i < in.size(); i++)
+    {
+        if (in[i] == 'P')
+            p++;
+        else if (in[i] == 'A')
+            a += p;
+        else
+            pat += a;
+    }
+    cout<<pat%1000000007;
+    system("pause");
+    return 0;
+}
