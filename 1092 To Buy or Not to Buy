@@ -1,0 +1,39 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+map<char,int>sale;
+
+int main()
+{
+    string a,b;
+    cin>>a>>b;
+    int amount=0,lack=0;
+    for(int i=0;i<a.size();i++)
+    {
+        sale[a[i]]++;
+        amount++;
+    }
+    int flag=0; //
+    for(int i=0;i<b.size();i++)
+    {
+       if(sale[b[i]]>0)
+       {
+           sale[b[i]]--;
+           amount--;
+       }
+       else if(sale[b[i]]==0)
+       {
+           flag=1;
+           lack++;
+       } 
+    }
+    if(flag)
+    cout<<"No "<<lack;
+    else
+    {
+        cout<<"Yes "<<amount;
+    }
+    
+    system("pause");
+    return 0;
+}
