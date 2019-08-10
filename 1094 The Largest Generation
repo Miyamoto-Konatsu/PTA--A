@@ -1,0 +1,51 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct node
+{
+    int level;
+    vector<int> son;
+};
+vector<node> tree(101);
+int n, m;
+map<int, int> generation;
+int max_num = 0, level;
+void bfs()
+{
+    queue<int> no;
+    no.push(1);
+    tree[1].level = 1;
+    while (!no.empty())
+    {
+        generation[tree[no.front()].level]++;
+        if (max_num < generation[tree[no.front()].level])
+        {
+            max_num = generation[tree[no.front()].level];
+            level = tree[no.front()].level;
+        }
+        for (int i = 0; i < tree[no.front()].son.size(); i++)
+        {
+            tree[tree[no.front()].son[i]].level=tree[no.front()].level+1;
+            no.push(tree[no.front()].son[i]);
+        }
+        no.pop();
+    }
+}
+int main()
+{
+    cin >> n >> m;
+    for (int i = 0; i < m; i++)
+    {
+        int a, b, c;
+        cin >> a >> b;
+        for (int j = 0; j < b; j++)
+        {
+            cin >> c;
+            tree[a].son.push_back(c);
+        }
+    }
+    bfs();
+    cout << max_num << ' ' << level;
+    system("pause");
+    return 0;
+}
