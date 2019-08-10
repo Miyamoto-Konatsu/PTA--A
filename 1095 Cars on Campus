@@ -1,0 +1,84 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct node
+{
+    string car_id;
+    int time;
+    int statue;
+    bool operator<(const node &a) const
+    {
+        return car_id == a.car_id ? time < a.time : car_id < a.car_id;
+    }
+};
+int cmp(node a, node b)
+{
+    return a.time < b.time;
+}
+int n, m;
+int main()
+{
+    cin >> n >> m;
+    vector<node> record(n), hege;
+    string status, time;
+    for (int i = 0; i < n; i++)
+    {
+        cin >> record[i].car_id;
+        cin >> time >> status;
+        record[i].time = stoi(time.substr(0, 2)) * 3600 + stoi(time.substr(3, 2)) * 60 + stoi(time.substr(6, 2));
+        record[i].statue = status == "in" ? 1 : -1;
+    }
+    sort(record.begin(), record.end());
+    map<string, int> park_time;
+    int longest = 0;
+    for (int i = 0; i < n - 1; i++)
+    {
+        if (record[i].car_id == record[i + 1].car_id && record[i].statue == 1 && record[i + 1].statue == -1)
+        {
+            hege.push_back(record[i]);
+            hege.push_back(record[i + 1]);
+            park_time[record[i].car_id] += (record[i + 1].time - record[i].time);
+        }
+
+        if (park_time[record[i].car_id] > longest)
+        {
+            longest = park_time[record[i].car_id];
+        }
+    }
+    sort(hege.begin(), hege.end(), cmp);
+    vector<int> car_num(hege.size());
+    for (int i = 0; i < hege.size(); i++)
+        if (i == 0)
+            car_num[i] = 1;
+        else
+            car_num[i] = car_num[i - 1] + hege[i].statue;
+    int start = 0;
+    for (int i = 0; i < m; i++)
+    {
+        int h, m, s;
+        scanf("%d:%d:%d", &h, &m, &s);
+        int querytime = h * 3600 + m * 60 + s;
+        int j;
+        for (j = start; j < hege.size(); j++)
+        {
+            if (hege[j].time > querytime)
+            {
+                cout << car_num[j - 1] << endl;
+                break;
+            }
+            else if (j == hege.size() - 1)
+            {
+                cout << car_num[j] << endl;
+            }
+        }
+        start = j;
+    }
+    for (auto it : park_time)
+    {
+        if (it.second == longest)
+            cout << it.first << ' ';
+    }
+    printf("%02d:%02d:%02d\n", longest / 3600, (longest / 60) % 60, longest % 60);
+    system("pause");
+    return 0;
+}
