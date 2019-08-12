@@ -1,0 +1,81 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+string lowTb[] = {"tret","jan", "feb", "mar", "apr", "may", "jun", "jly", "aug", "sep", "oct", "nov", "dec"};
+string highTb[] = {"tam", "hel", "maa", "huh", "tou", "kes", "hei", "elo", "syy", "lok", "mer", "jou"};
+ 
+int main()
+{
+    map<string,int> low2int,high2int,common2int;
+    for(int i = 0; i <= 12; i++) low2int[lowTb[i]] = i;
+    for(int i = 1; i <= 12; i++) high2int[highTb[i-1]] = i;
+    int N;
+    stringstream ss1,ss2;
+    cin >> N;
+    getchar();
+    string tmp;
+    vector<string> inputs;
+    for(int i = 0; i < N; i++){
+        getline(cin,tmp);
+        inputs.push_back(tmp);
+    }
+    for(int i = 0; i < inputs.size(); i++){
+        string str = inputs[i];
+        if(isalpha(str[0])){
+            ss1.clear();
+            ss1.str(str);
+            string seg;
+            vector<string> num;
+            while(1){
+                ss1 >> seg;
+                if(ss1.fail()) break;
+                num.push_back(seg);
+            }
+            if(num.size() == 1){
+                if(low2int.find(num[0])!=low2int.end()){
+                    printf("%d\n",low2int[num[0]]);
+                }else{
+                    int n = high2int[num[0]] * 13;
+                    printf("%d\n",n);
+                }
+            }else{
+                int low = low2int[num[1]];
+                int high = high2int[num[0]];
+                printf("%d\n",low + high * 13);
+            }
+        }else{
+            // num
+            int base = 13;
+            int yu;
+            ss2.str("");
+            ss2.clear();
+            ss2 << str;
+            int N;
+            ss2 >> N;
+            vector<int> num;
+            if(N <= 12){
+                printf("%s\n",lowTb[N].c_str());
+                continue;
+            }
+            while(N){
+                yu = N % base;
+                num.push_back(yu);
+                N /= base;
+            }
+            if(num.size() == 2){
+                int high = num[1];
+                int low = num[0];
+                if(low != 0){
+                    printf("%s %s\n",highTb[high-1].c_str(),lowTb[low].c_str());
+                }else{
+                    printf("%s\n",highTb[high-1].c_str());
+                }
+            }else{
+                int low = num[0];
+                printf("%s\n",lowTb[low].c_str());
+            }
+        }
+    }
+    system("pause");
+    return 0;
+}
