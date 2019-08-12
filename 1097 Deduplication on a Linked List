@@ -1,0 +1,56 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct node
+{
+    int addr, data, next;
+};
+int main()
+{
+    int first, n;
+    node nodes[100010];
+    cin >> first >> n;
+    for (int i = 0; i < n; i++)
+    {
+        int addr, data, next;
+        cin >> addr >> data >> next;
+        nodes[addr].addr = addr;
+        nodes[addr].data = data;
+        nodes[addr].next = next;
+    }
+    vector<node> sorted;
+    for (int i = 0; i < n; i++)
+    {
+        sorted.push_back(nodes[first]);
+        first = nodes[first].next;
+        if (first==-1)
+            break;
+    }
+    int visited[100010];
+    vector<node>removed;
+    vector<node>retain;
+    for(int i=0;i<sorted.size();i++)
+    {
+        if(visited[abs(sorted[i].data)])
+        {
+            removed.push_back(sorted[i]);
+            continue;
+        }
+        visited[abs(sorted[i].data)]=1;
+        retain.push_back(sorted[i]);   
+    }
+    for (int i = 0; i < retain.size()-1; i++)
+	{
+		printf("%05d %d %05d\n",retain[i].addr,retain[i].data,retain[i+1].addr);
+	}
+	printf("%05d %d -1\n",retain[retain.size()-1].addr,retain[retain.size()-1].data);
+    if(removed.size()>0){
+    for (int i = 0; i < removed.size()-1; i++)
+	{
+		printf("%05d %d %05d\n",removed[i].addr,removed[i].data,removed[i+1].addr);
+	}
+	printf("%05d %d -1",removed[removed.size()-1].addr,removed[removed.size()-1].data);
+    }
+    system("pause");
+    return 0;
+}
