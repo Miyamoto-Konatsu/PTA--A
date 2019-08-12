@@ -1,0 +1,78 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int n;
+vector<int> a;
+vector<int> b;
+void print(vector<int> a)
+{
+    for (int i = 0; i < a.size(); i++)
+    {
+        if (i != 0)
+            cout << ' ';
+        cout << a[i];
+    }
+}
+int in=0; //判断是否是插入排序
+void insert()
+{
+    for (int i = 1; i < a.size(); i++)
+    {
+        for (int j = i - 1; j >= 0; j--)
+            if (a[j + 1] < a[j])
+                swap(a[j + 1], a[j]);
+            else if (a == b)
+            {
+                in = 1;
+                cout << "Insertion Sort" << endl;
+                for (int k = i + 1; k < a.size(); k++)
+                {
+                    for (int j = k - 1; j >= 0; j--)
+                        if (a[j + 1] < a[j])
+                            swap(a[j + 1], a[j]);
+                        else
+                        {
+                            print(a);
+                            return;
+                        }
+                    print(a);
+                    return;
+                }
+            }
+    }
+}
+int flag; //判断是否是堆排序
+void Heap(vector<int> c)
+{
+    make_heap(c.begin(), c.end());
+    
+    for (int j = 0; j < n; j++)
+    {
+        pop_heap(c.begin(), c.end() - j);
+        if (c == b)
+        {
+            cout << "Heap Sort" << endl;
+            pop_heap(c.begin(),  c.end() - j - 1);
+            print(c);
+            return;
+        }
+    }
+}
+int main()
+{
+
+    
+    cin >> n;
+    a.resize(n);
+    b.resize(n);
+    for (int i = 0; i < n; i++)
+        cin >> a[i];
+    for (int i = 0; i < n; i++)
+        cin >> b[i];
+    vector<int> c(a);
+    insert();
+    if (!in)
+        Heap(c);
+    system("pause");
+    return 0;
+}
