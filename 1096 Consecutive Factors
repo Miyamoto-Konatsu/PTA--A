@@ -1,0 +1,40 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    int num, maxlen = 0, start;
+    cin >> num;
+    for (int i = 2; i < sqrt(num) + 1; i++)
+    {
+        int temp = 1, len = 0;
+        for (int j = i; j < sqrt(num) + 1; j++)
+        {
+            temp *= j;
+            if (num % temp != 0)
+                break;
+            len++;
+        }
+        if (len > maxlen)
+        {
+            start = i;
+            maxlen = len;
+        }
+    }
+    if (maxlen == 0)
+        cout << 1 << endl
+             << num;
+    else
+    {
+        cout<<maxlen<<endl;
+        for (int i = 0; i < maxlen; i++)
+        {
+            if (i != 0)
+                cout << '*';
+            cout << start + i;
+        }
+    }
+
+    system("pause");
+    return 0;
+}
