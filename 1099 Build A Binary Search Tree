@@ -1,0 +1,57 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct node
+{
+    int data;
+    int lchild, rchild;
+};
+node tree[101];
+int n;
+int a = 0;
+void assign(int data[], int d)
+{
+    if (d != -1)
+    {
+        assign(data, tree[d].lchild);
+        tree[d].data = data[a];
+        a++;
+        assign(data, tree[d].rchild);
+    }
+}
+void print()
+{
+    vector<int> out;
+    queue<node> s;
+    s.push(tree[0]);
+    while (!s.empty())
+    {
+        out.push_back(s.front().data);
+        if (s.front().lchild != -1)
+            s.push(tree[s.front().lchild]);
+        if (s.front().rchild != -1)
+            s.push(tree[s.front().rchild]);
+        s.pop();
+    }
+    for (int i = 0; i < n; i++)
+    {
+        if (i != 0)
+            cout << ' ';
+        cout << out[i];
+    }
+}
+int main()
+{
+    int data[101];
+    cin >> n;
+
+    for (int i = 0; i < n; i++)
+        cin >> tree[i].lchild >> tree[i].rchild;
+    for (int i = 0; i < n; i++)
+        cin >> data[i];
+    sort(data, data + n);
+    assign(data, 0);
+    print();
+    system("pause");
+    return 0;
+}
