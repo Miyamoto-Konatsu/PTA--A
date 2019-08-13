@@ -1,0 +1,46 @@
+#include <bits/stdc++.h>
+using namespace std;
+int N, K, P;
+
+vector<int> ans, temp;
+int maxnum = 0;
+void dfs(int n, int k, int sum)
+{
+    if (n <= 0 || k > K || sum > N)
+        return;
+    if (k == K && sum == N)
+    {
+        int a = 0;
+        for (int i = 0; i < temp.size(); i++)
+            a += temp[i];
+        if (a > maxnum)
+        {
+            maxnum = a;
+            ans = temp;
+        }
+    }
+    temp.push_back(n);
+    dfs(n, k + 1, sum + pow(n, P));
+    temp.pop_back();
+    dfs(n - 1, k, sum);
+}
+int main()
+{
+    cin >> N >> K >> P;
+    dfs(sqrt(N), 0, 0);
+    if (ans.size())
+    {
+        cout<<N<<" = ";
+        for (int i = 0; i < ans.size(); i++)
+        {
+            if(i!=0)
+            cout<<" + ";
+            cout<<ans[i]<<'^'<<P;
+        }
+           
+    }
+    else
+        cout << "Impossible";
+    system("pause");
+    return 0;
+}
