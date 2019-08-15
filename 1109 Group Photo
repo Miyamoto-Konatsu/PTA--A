@@ -1,0 +1,58 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct node
+{
+    int height;
+    string name;
+    bool operator<(const node &a) const
+    {
+        return height == a.height ? name > a.name : height < a.height;
+    }
+};
+vector<node> stu(10010);
+int main()
+{
+    int n, k;
+    cin >> n >> k;
+    int floor_persons[k];
+    for (int i = 0; i < n; i++)
+        cin >> stu[i].name >> stu[i].height;
+    int a = n / k;
+    int b = n - a*(k-1);
+    node out[10001];
+    for (int i = 0; i < k; i++)
+    {
+        if (i != k - 1)
+            floor_persons[i] = a;
+        if (i == k - 1)
+            floor_persons[i] =  b;
+    }
+    sort(stu.begin(),stu.begin()+n);
+    int rank=n;
+    for (int i = k - 1; i >= 0; i--)
+    {
+        vector<node> person(stu.begin() + rank-floor_persons[i], stu.begin() +rank);
+        rank-=floor_persons[i];
+        int site = floor_persons[i] / 2 + 1;
+        int offset = -1;
+        for (int m = person.size() - 1; m >= 0; m--)
+        {
+            out[site] = person[m];
+            site += offset;
+            if (offset < 0)
+                offset = offset * (-1) + 1;
+            else
+                offset = offset * (-1) - 1;
+        }
+        for (int j = 1; j <= floor_persons[i]; j++)
+        {
+            if(j!=1)
+            cout<<' ';
+            cout << out[j].name;
+        }
+        cout << endl;
+    }
+    system("pause");
+    return 0;
+}
