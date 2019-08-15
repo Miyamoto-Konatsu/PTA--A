@@ -1,0 +1,33 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main()
+{
+    regex reg("^[-]?([0-9]{0,3}|1000)$|^[-]?[0-9]{0,3}\\.[0-9]{0,2}$|^[-]?1000\\.0{0,2}$");
+    int n, count = 0;
+    cin >> n;
+    double sum = 0;
+    for (int i = 0; i < n; i++)
+    {
+        string in;
+        cin >> in;
+        
+        bool ret = regex_match(in, reg);
+        if (!ret)
+            cout << "ERROR: " << in << " is not a legal number" << endl;
+        else
+        {
+            sum += stod(in);
+            count++;
+        }
+    }
+    if (count == 0)
+        cout << "The average of 0 numbers is Undefined";
+    else if (count == 1)
+        printf("The average of 1 number is %.2f", sum);
+    else
+        printf("The average of %d numbers is %.2f", count, sum / count);
+    system("pause");
+    return 0;
+}
