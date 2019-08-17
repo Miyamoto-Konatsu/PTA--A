@@ -1,0 +1,78 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct node
+{
+    int id;
+    int left, right;
+};
+node tree[30];
+int n;
+
+int isCBT(int root)
+{
+    queue<node> s;
+    s.push(tree[root]);
+    int last, flag = 0;
+    while (!s.empty())
+    {
+        last = s.front().id;
+        if (tree[s.front().id].left != -1)
+        {
+            if (flag)
+                return -1;
+            s.push(tree[s.front().left]);
+        }
+        else
+            flag = 1;
+        if (tree[s.front().id].right != -1)
+        {
+            if (flag)
+                return -1;
+            s.push(tree[s.front().right]);
+        }
+        else
+            flag = 1;
+        s.pop();
+    }
+    return last;
+}
+int main()
+{
+    cin >> n;
+    int s[n] = {0};
+    for (int i = 0; i < n; i++)
+    {
+        string a, b;
+        cin >> a >> b;
+        tree[i].id = i;
+        if (a == "-")
+            tree[i].left = -1;
+        else
+        {
+            tree[i].left = stoi(a);
+            s[stoi(a)] = 1;
+        }
+        if (b == "-")
+            tree[i].right = -1;
+        else
+        {
+            tree[i].right = stoi(b);
+            s[stoi(b)] = 1;
+        }
+    }
+    int root;
+    for (int i = 0; i < n; i++)
+        if (s[i] != 1)
+        {
+            root = i;
+            break;
+        }
+    int out = isCBT(root);
+    if (out == -1)
+        cout << "NO " << root;
+    else
+        cout << "YES " << out;
+    system("pause");
+    return 0;
+}
