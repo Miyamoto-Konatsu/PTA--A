@@ -1,0 +1,152 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int inf = 10000;
+
+int N, M;
+int dist[510][510];
+int times[510][510];
+int dis[510];
+int ti[510];
+int visit[510];
+int start, fini;
+vector<int> shortest[510];
+vector<int> fast[510];
+int ss[510];
+int vv[510];
+
+int sd()
+{
+    fill(visit, visit + 510, 0);
+    fill(dis, dis + 510, inf);
+    fill(ss,ss+510,inf);
+    dis[start] = 0;
+    ss[start]=0;
+    for (int i = 0; i < N; i++)
+    {
+
+        int min = inf, next;
+        for (int j = 0; j < N; j++)
+        {
+            if (dis[j] < min && !visit[j])
+            {
+                min = dis[j];
+                next = j;
+            }
+        }
+
+        visit[next] = 1;
+        for (int j = 0; j < N; j++)
+        {
+            if (dis[next] + dist[next][j] < dis[j] && !visit[j])
+            {
+                ss[j]=ss[next]+times[next][j];
+                dis[j] = dis[next] + dist[next][j];
+                shortest[j] = shortest[next];
+                shortest[j].push_back(j);
+            }
+            else if(dis[next] + dist[next][j] == dis[j] && !visit[j] && ss[j]>ss[next]+times[next][j])
+            {
+                ss[j]=ss[next]+times[next][j];
+                shortest[j] = shortest[next];
+                shortest[j].push_back(j);
+            }
+        }
+    }
+    return dis[fini];
+}
+int st()
+{
+    fill(visit, visit + 510, 0);
+    fill(dis, dis + 510, inf);
+    fill(vv,vv+510,inf);
+    dis[start] = 0;
+    vv[start]=0;
+    for (int i = 0; i < N; i++)
+    {
+        int min = inf, next=-1;
+        for (int j = 0; j < N; j++)
+        {
+            if (dis[j] < min && !visit[j])
+            {
+                min = dis[j];
+                next = j;
+            }
+        }
+        if(next==-1)
+        break;
+        visit[next] = 1;
+        for (int j = 0; j < N; j++)
+        {
+            if (dis[next] + times[next][j] < dis[j] && !visit[j])
+            {
+                vv[j]=vv[next]+1;
+                dis[j] = dis[next] + times[next][j];
+                fast[j] = fast[next];
+                fast[j].push_back(j);
+            }
+            else if(dis[next] + times[next][j] == dis[j] && !visit[j] && vv[j]>vv[next]+1)
+            {
+                vv[j]=vv[next]+1;
+                fast[j] = fast[next];
+                fast[j].push_back(j);
+
+            }
+        }
+    }
+    return dis[fini];
+}
+
+void print(vector<int> a)
+{
+    for (int i = 0; i < a.size(); i++)
+    {
+        if (i != 0)
+            cout << " -> ";
+        cout << a[i];
+    }
+}
+int main()
+{
+
+    cin >> N >> M;
+    fill(dist[0], dist[0] + 510 * 510, inf);
+    fill(times[0], times[0] + 510 * 510, inf);
+    for (int i = 0; i < M; i++)
+    {
+        int a, b, c, d, e;
+        cin >> a >> b >> c >> d >> e;
+        dist[a][b] = d;
+        times[a][b] = e;
+        if (!c)
+        {
+            dist[b][a] = d;
+            times[b][a] = e;
+        }
+    }
+
+    cin >> start >> fini;
+    for (int i = 0; i < N; i++)
+    {
+        shortest[i].push_back(start);
+        fast[i].push_back(start);
+    }
+
+    int a = sd();
+    int b = st();
+    if (fast[fini]==shortest[fini])
+    {
+        cout << "Distance = " << a << "; Time = " << b << ": ";
+        print(shortest[fini]);
+    }
+    else
+    {
+        cout << "Distance = " << a << ": ";
+        print(shortest[fini]);
+        cout << endl
+             << "Time = " << b << ": ";
+        print(fast[fini]);
+    }
+    system("pause");
+    return 0;
+}
