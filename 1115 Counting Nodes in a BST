@@ -1,0 +1,41 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct node
+{
+    int data;
+    node *left, *right;
+};
+vector<int> level(1000);
+int max_level = -1;
+node *BST(node *root, int data, int floor)
+{
+    if (root == NULL)
+    {
+        level[floor]++;
+        if (max_level < floor)
+            max_level = floor;
+        root = new node;
+        root->data = data;
+        root->left = root->right = NULL;
+    }
+    else if (data <= root->data)
+        root->left = BST(root->left, data, floor + 1);
+    else
+        root->right = BST(root->right, data, floor + 1);
+    return root;
+}
+int main()
+{
+    node *top = NULL;
+    int n, a;
+    cin >> n;
+    for (int i = 0; i < n; i++)
+    {
+        cin >> a;
+        top = BST(top, a, 0);
+    }
+    cout<<level[max_level]<<" + "<<level[max_level-1]<<" = "<<level[max_level-1] + level[max_level];
+    system("pause");
+    return 0;
+}
