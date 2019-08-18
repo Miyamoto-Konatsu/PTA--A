@@ -1,0 +1,24 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    int n;
+    cin >> n;
+    int num[n];
+    for (int i = 0; i < n; i++)
+        cin >> num[i];
+    sort(num, num + n);
+    cout << n % 2;
+    int a = 0, b = 0;
+    for (int i = 0; i < n; i++)
+    {
+        if (i < n / 2)
+            a += num[i];
+        else
+            b += num[i];
+    }
+    cout << ' ' << b - a;
+    system("pause");
+    return 0;
+}
