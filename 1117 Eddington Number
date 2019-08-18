@@ -1,0 +1,28 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    int N, E = 0;
+    cin >> N;
+    int *length = new int[N+1];
+    for (int i = 1; i <= N; i++)
+        cin >> length[i];
+    sort(length+1, length + N+1, greater<int>());
+    if (length[N - 1] > N)
+        cout << N;
+    else
+    {
+        for (int i = 1; i <= N; i++)
+        {
+            if (length[i] <= i )
+            {
+                E = i-1;
+                break;
+            }
+        }
+        cout << E;
+    }
+    system("pause");
+    return 0;
+}
