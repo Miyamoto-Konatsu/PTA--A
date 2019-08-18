@@ -1,0 +1,57 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    map<char, int> stucked;
+    string s, temp = "";
+    int k;
+    cin >> k >> s;
+    for (int i = 0; i < s.size(); i++)
+    {
+        if (s[i] == temp.back())
+        {
+            temp.push_back(s[i]);
+            if (temp.size() == k)
+            {
+               
+                temp = "";
+                if (stucked[s[i]] != -1)
+                    stucked[s[i]] = 1;
+            }
+        }
+        else if (s[i] != temp.back())
+        {
+
+            if (temp != "")
+                stucked[temp.back()] = -1;
+            temp = "";
+            temp.push_back(s[i]);
+        }
+    }
+    for (int i=0;i<s.size();i++)
+    {
+        if(stucked[s[i]]==1)
+        {
+            cout<<s[i];
+            stucked[s[i]]=2;
+        }
+    }
+    cout<<endl;
+     for(int i=0;i<s.size();)
+     {
+         if(stucked[s[i]]==2)
+         {
+             cout<<s[i];
+             i+=k;
+         }
+         else
+         {
+            cout<<s[i];
+             i+=1;
+         } 
+     }
+
+    system("pause");
+    return 0;
+}
