@@ -1,0 +1,31 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    int m, n, s;
+    cin >> m >> n >> s;
+    map<string, int> won;
+    vector<string> forwards(m + 1);
+    for (int i = 1; i <= m; i++)
+        cin >> forwards[i];
+    if (s > m)
+        cout << "Keep going...";
+    else
+    {
+        for (int i = s; i <= m;)
+        {
+            if (won[forwards[i]])
+                i++;
+            else
+            {
+                cout << forwards[i] << endl;
+                won[forwards[i]] = 1;
+                i += n;
+            }
+        }
+    }
+
+    system("pause");
+    return 0;
+}
