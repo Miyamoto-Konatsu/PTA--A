@@ -1,0 +1,124 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct node
+{
+    int data;
+    struct node *left, *right;
+};
+node *leftRotate(node *t)
+{
+    node *p = t->right;
+    t->right = p->left;
+    p->left = t;
+    return p;
+}
+node *rightRotate(node *t)
+{
+    node *p = t->left;
+    t->left = p->right;
+    p->right = t;
+    return p;
+}
+node *rightleftRotate(node *t)
+{
+
+    t->right = rightRotate(t->right);
+    return leftRotate(t);
+}
+
+node *leftrightRotate(node *t)
+{
+
+    t->left = leftRotate(t->left);
+    return rightRotate(t);
+}
+
+int GetHeight(node *t)
+{
+    if (t == NULL)
+        return 0;
+    return max(GetHeight(t->left), GetHeight(t->right)) + 1;
+}
+node *AVL(node *no, int data)
+{
+    if (no == NULL)
+    {
+
+        no = new node();
+        no->data = data;
+        no->left = NULL;
+        no->right = NULL;
+    }
+    else if (data < no->data)
+    {
+
+        no->left = AVL(no->left, data);
+        if (GetHeight(no->left) - GetHeight(no->right) > 1)
+        {
+            if (data < no->left->data)
+                no = rightRotate(no);
+            else
+                no = leftrightRotate(no);
+        }
+    }
+    else
+    {
+        no->right = AVL(no->right, data);
+        if (GetHeight(no->right) - GetHeight(no->left) > 1)
+        {
+            if (data > no->right->data)
+                no = leftRotate(no);
+            else
+                no = rightleftRotate(no);
+        }
+    }
+    return no;
+}
+void isBCT(node *root)
+{
+    queue<node> s;
+    s.push(*root);
+    int flag1=0, flag2=0, flag = 0;
+    while (!s.empty())
+    {
+      //  cout<<flag1<<flag2<<endl;
+        if (flag)
+            cout << ' ';
+        flag = 1;
+        cout << s.front().data;
+        if (s.front().left != NULL)
+        {
+            if (flag1)
+                flag2 = 1;
+            s.push(*s.front().left);
+        }
+        else
+            flag1 = 1;
+        if (s.front().right != NULL)
+        {
+            if (flag1)
+                flag2 = 1;
+            s.push(*s.front().right);
+        }
+        else
+            flag1 = 1;
+        s.pop();
+    }
+    string out = flag2 != 1 ? "\nYES" : "\nNO";
+    cout << out;
+}
+int main()
+{
+    int n, m;
+    cin >> n;
+    node *root = NULL;
+    for (int i = 0; i < n; i++)
+    {
+        cin >> m;
+        root = AVL(root, m);
+    }
+    isBCT(root);
+    system("pause");
+    return 0;
+}
