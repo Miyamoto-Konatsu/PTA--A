@@ -1,0 +1,46 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<int> v[510];
+int visit[510];
+int cnt = 0, n, m;
+void dfs(int i)
+{
+    visit[i] = 1;
+    cnt++;
+    for (int j = 0; j < v[i].size(); j++)
+        if (!visit[v[i][j]] )
+            dfs(v[i][j]);
+}
+int main()
+{
+
+    cin >> n >> m;
+    for (int i = 1; i <= m; i++)
+    {
+        int a, b;
+        cin >> a >> b;
+        v[a].push_back(b);
+        v[b].push_back(a);
+    }
+    int s = 0;
+    for (int i = 1; i <= n; i++)
+    {
+        if (i != 1)
+            cout << ' ';
+        cout <<v[i].size();
+        if (v[i].size() % 2)
+            s++;
+    }
+    dfs(1);
+    cout << endl;
+    if (s == 0 && cnt == n)
+        cout << "Eulerian";
+    else if (s == 2 && cnt == n)
+        cout << "Semi-Eulerian";
+    else
+        cout << "Non-Eulerian";
+
+    system("pause");
+    return 0;
+}
