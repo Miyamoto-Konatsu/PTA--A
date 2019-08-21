@@ -1,0 +1,30 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    set<int> friendID;
+    int n;
+    cin>>n;
+    for (int i = 0; i < n; i++)
+    {
+        string a;
+        cin >> a;
+        int sum = 0;
+        for (int j = 0; j < a.size(); j++)
+            sum += a[j] - '0';
+        friendID.insert(sum);
+    }
+    cout << friendID.size()<<endl;
+    int flag=0;
+    for(auto it:friendID)
+    {
+        if(flag)
+        cout<<" ";
+        flag=1;
+        cout<<it;
+    }
+    cout<<endl;
+    system("pause");
+    return 0;
+}
