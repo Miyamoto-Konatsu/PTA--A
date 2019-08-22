@@ -1,0 +1,66 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct node
+{
+    int floor;
+    int data;
+    node *left, *right;
+};
+vector<int> in, post;
+int n;
+node *init(int inl, int inr, int postl, int postr, int floor)
+{
+    if (inl > inr)
+        return NULL;
+    node *p = new node;
+    p->data = post[postr];
+    p->floor = floor;
+    int i;
+    for (i = inl; i <= inr; i++)
+        if (in[i] == post[postr])
+            break;
+    p->left = init(inl, i - 1, postl, postl + i - inl - 1, floor + 1);
+    p->right = init(i + 1, inr, postl + i - inl, postr - 1, floor + 1);
+    return p;
+}
+void travel(node *root)
+{
+    queue<node> qu;
+    qu.push(*root);
+    vector<node> floor[10000];
+    int max_f=0;
+    while (qu.size())
+    {
+        if(qu.front().floor>max_f)
+        max_f=qu.front().floor;
+        floor[qu.front().floor].push_back(qu.front());
+        if (qu.front().left)
+            qu.push(*qu.front().left);
+        if (qu.front().right)
+            qu.push(*qu.front().right);
+        qu.pop();
+    }
+    cout<<floor[0][0].data;
+    for(int i=1;i<=max_f;i++)
+    {
+        if(i%2==0)
+        reverse(floor[i].begin(),floor[i].end());
+        for(int j=0;j<floor[i].size();j++)
+        cout<<' '<<floor[i][j].data;
+    }
+}
+int main()
+{
+    cin >> n;
+    in.resize(n + 1);
+    post.resize(n + 1);
+    for (int i = 1; i <= n; i++)
+        cin >> in[i];
+    for (int i = 1; i <= n; i++)
+        cin >> post[i];
+    node *tree = init(1, n, 1, n, 0);
+    travel(tree);
+    system("pause");
+    return 0;
+}
