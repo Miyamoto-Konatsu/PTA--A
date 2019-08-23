@@ -1,0 +1,41 @@
+#include <bits/stdc++.h>
+using namespace std;
+int n, m;
+struct node
+{
+    int value, time;
+    bool operator<(const node &a) const
+    {
+        return time == a.time ? value < a.value :time>a.time ;
+    }
+};
+int times[50010];
+set<node> s;
+int main()
+{
+    cin >> n >> m;
+    int a;
+    for (int i = 0; i < n; i++)
+    {
+        cin >> a;
+        if (i)
+        {
+            int k = 0;
+            cout << a << ':';
+            for (auto it : s)
+            {
+                cout << ' ' << it.value;
+                k++;
+                if (k == m)
+                    break;
+            }
+            cout<<endl;
+        }
+        auto it=s.find(node{a,times[a]});
+        if(it!=s.end())
+        s.erase(it);
+        s.insert(node{a,++times[a]});
+    }
+    system("pause");
+    return 0;
+}
