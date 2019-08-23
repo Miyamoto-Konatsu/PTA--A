@@ -1,0 +1,36 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+void isSolution(vector<int> num, int k)
+{
+    vector<int> site(k+1, 0);
+    for (int i = 1; i <= k; i++)
+    {
+        for (int j = 1; j < i; j++)
+        {
+            if (i + num[i] == j + site[j] || num[i]==site[j])
+            {
+                cout << "NO" << endl;
+                return;
+            }
+        }
+        site[i] = num[i];
+    }
+    cout << "YES" << endl;
+}
+int main()
+{
+    int n;
+    cin >> n;
+    for (int i = 0; i < n; i++)
+    {
+        int k;
+        cin >> k;
+        vector<int> num(k + 1);
+        for (int j = 1; j <= k; j++)
+            cin >> num[j];
+        isSolution(num,k);
+    }
+    system("pause");
+    return 0;
+}
