@@ -1,0 +1,58 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    string s;
+    cin >> s;
+    int flag = 0;
+    string r = s;
+    reverse(r.begin(), r.end());
+    if (r == s)
+    {
+        flag = 1;
+    }
+    else
+        for (int i = 0; i < 10; i++)
+        {
+            vector<int> a, b;
+            for (int j = 0; j < s.size(); j++)
+            {
+                a.push_back(s[j] - '0');
+                b.push_back(r[j] - '0');
+            }
+            for (int j = a.size() - 1; j >= 0; j--)
+            {
+                if (j > 0)
+                {
+                    a[j] += b[j];
+                    if (a[j] >= 10)
+                    {
+                        int ad = a[j] / 10;
+                        a[j] %= 10;
+                        a[j - 1] += ad;
+                    }
+                }
+                else
+                    a[j] += b[j];
+            }
+            string sum = "";
+            for (int j = 0; j < a.size(); j++)
+                sum += to_string(a[j]);
+            cout << s << " + " << r << " = " << sum << endl;
+            s = sum;
+            r = s;
+            reverse(r.begin(), r.end());
+            if (r == s)
+            {
+                flag = 1;
+                break;
+            }
+        }
+    if (flag)
+        cout << s << " is a palindromic number.";
+    else
+        cout << "Not found in 10 iterations.";
+    system("pause");
+    return 0;
+}
