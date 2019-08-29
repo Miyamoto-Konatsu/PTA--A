@@ -1,0 +1,62 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct grade
+{
+    string id;
+    float online = -1, mid = -1, fin = -1, grade;
+};
+
+map<string, grade> stu;
+int main()
+{
+    float n, m, p, score;
+    string id;
+    cin >> n >> m >> p;
+    for (int i = 0; i < n; i++)
+    {
+        cin >> id >> score;
+        stu[id].online = score;
+    }
+    for (int i = 0; i < m; i++)
+    {
+        cin >> id >> score;
+        stu[id].mid = score;
+    }
+    for (int i = 0; i < p; i++)
+    {
+        cin >> id >> score;
+        stu[id].fin = score;
+    }
+    vector<grade> q;
+    for (auto it : stu)
+    {
+        if (it.second.online >= 200 && it.second.fin != -1)
+            q.push_back({it.first, it.second.online, it.second.mid, it.second.fin});
+    }
+    for (int i = 0; i < q.size(); i++)
+    {
+        float score;
+        if (q[i].mid > q[i].fin)
+        {
+            score = q[i].mid * 0.4 + q[i].fin * 0.6;
+            if (score >= int(score) + 0.5)
+                score = int(score) + 1;
+            else
+                score = int(score);
+        }
+        else
+            score = q[i].fin;
+        q[i].grade = score;
+    }
+     sort(q.begin(), q.end(), [](grade a, grade b) { return a.grade == b.grade ?  a.id < b.id:a.grade>b.grade; });
+    for (int i = 0; i < q.size(); i++)
+    {
+        if(q[i].grade>=60)
+        cout << q[i].id << ' ' << q[i].online << ' ' << q[i].mid << ' ' << q[i].fin << ' ' << q[i].grade << '\n';
+    }
+
+   
+    system("pause");
+    return 0;
+}
