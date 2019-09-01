@@ -1,0 +1,65 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int e[210][210];
+int n, m, D;
+
+int main()
+{
+    cin >> D >> m;
+    int a, b;
+    for (int i = 0; i < m; i++)
+    {
+        cin >> a >> b;
+        e[a][b] = e[b][a] = 1;
+    }
+    cin >> n;
+    for (int i = 0; i < n; i++)
+    {
+        cin >> a;
+        vector<int> nums(a);
+        for (int j = 0; j < a; j++)
+            cin >> nums[j];
+        
+        {
+            int flag = 1;
+            for (int j = 0; j < a; j++)
+                for (int k = j + 1; k < a; k++)
+                {
+                    if (!e[nums[j]][nums[k]])
+                    {
+                        flag = 0;
+                        break;
+                    }
+                }
+            if (!flag)
+                cout << "Not a Clique\n";
+            else
+            {
+
+                for (int j = 1; j <= D; j++)
+                {
+                    int sum = 0;
+                    for (int k = 0; k < a; k++)
+                    {
+                        if (e[j][nums[k]])
+                            sum++;
+                        else if (nums[k] == j)
+                            break;
+                    }
+                    if(sum==a)
+                    {
+                        flag=0;
+                        break;
+                    }
+                }
+                if (flag == 0)
+                    cout << "Not Maximal\n";
+                else
+                    cout << "Yes\n";
+            }
+        }
+    }
+    system("pause");
+    return 0;
+}
