@@ -1,0 +1,39 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    int n, m, a, b;
+    cin >> n >> m;
+    vector<int> num(m);
+    map<int, int> exist;
+    for (int i = 0; i < m; i++)
+    {
+        cin >> num[i];
+        exist[num[i]] = 1;
+    }
+    for (int i = 0; i < n; i++)
+    {
+        cin >> a >> b;
+        int v;
+        for (int j = 0; j < m; j++)
+        {
+            v = num[j];
+            if ((v >= a && v <= b) || (v >= b && v <= a))
+                break;
+        }
+        if (!exist[a] && !exist[b])
+            printf("ERROR: %d and %d are not found.\n", a, b);
+        else if (!exist[a])
+            printf("ERROR: %d is not found.\n", a);
+        else if (!exist[b])
+            printf("ERROR: %d is not found.\n", b);
+        else if (a == v || b == v)
+            printf("%d is an ancestor of %d.\n", v,a==v?b:a);
+        else
+            printf("LCA of %d and %d is %d.\n", a, b, v);
+
+    }
+    system("pause");
+    return 0;
+}
