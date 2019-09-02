@@ -1,0 +1,51 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+
+bool isprime(int n) {
+    for (int i = 2; i * i <= n; i++)
+        if (n % i == 0) return false;
+    return true;
+}
+
+int main()
+{
+    int MSize, N, M, num;
+    cin >> MSize >> N >> M;
+    while(!isprime(MSize)) MSize++;
+    int hash[MSize] = {0};
+    for (int i = 0; i < N; i++)
+    {
+        cin >> num;
+        int j = 0, flag = 0;
+        while (j < MSize)
+        {
+            if (!hash[(num + j * j) % MSize])
+            {
+                hash[(num + j * j) % MSize] = num;
+                flag = 1;
+                break;
+            }
+            j++;
+        }
+        if (!flag)
+            cout << num << " cannot be inserted.\n";
+    }
+    int times = 0;
+    for (int i = 0; i < M; i++)
+    {
+        cin >> num;
+        int j = 0;
+        while (j <= MSize)
+        {
+            times++;
+            if (hash[(num + j * j) % MSize] == num||hash[(num+j*j)%MSize]==0)
+                break;
+            j++;
+        }
+    
+    }
+   printf("%.1lf\n", times * 1.0 / M);
+    system("pause");
+    return 0;
+}
