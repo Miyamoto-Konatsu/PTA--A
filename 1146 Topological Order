@@ -1,0 +1,57 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    int n, m, a, b, k;
+    cin >> n >> m;
+    int indegree[n + 1] = {0};
+    int e[n + 1][n + 1] = {0};
+    fill(e[0], e[0] + (n + 1) * (n + 1), 0);
+    for (int i = 0; i < m; i++)
+    {
+        cin >> a >> b;
+        indegree[b]++;
+        e[a][b] = 1;
+    }
+    cin >> k;
+    vector<int> ans;
+    for (int i = 0; i < k; i++)
+    {
+        int v, flag = 1;
+        int temp_in[n + 1], temp_e[n + 1][n + 1];
+        for (int j = 1; j <= n; j++)
+        {
+            temp_in[j] = indegree[j];
+            for (int z = 1; z <= n; z++)
+                temp_e[j][z] = e[j][z];
+        }
+        for (int j = 1; j <= n; j++)
+        {
+            cin >> v;
+            if (temp_in[v] != 0)
+                flag = 0;
+            else
+            {
+                for (int l = 1; l <= n; l++)
+                {
+                    if (temp_e[v][l])
+                    {
+                        temp_e[v][l] = 0;
+                        temp_in[l]--;
+                    }
+                }
+            }
+        }
+        if (!flag)
+            ans.push_back(i);
+    }
+    for (int i = 0; i < ans.size(); i++)
+    {
+        if (i != 0)
+            cout << ' ';
+        cout << ans[i];
+    }
+    system("pause");
+    return 0;
+}
